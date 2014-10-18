@@ -1,60 +1,54 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var express = require('express'),
+    path = require('path'),
+    docs = require("./docs/docs")("example");
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
-var app = express();
+var app = express(),
+    app_port = process.env.VCAP_APP_PORT || 3000;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/*', function(req, res) {
+    var path = req.params[0];
+    if(path.charAt(path.length -1) == "/")
+        path = path.substring(0, s.length - 1);
 
-app.use('/', routes);
-//app.use('/users', users);
+    var vm = {
+        title: 'Document Viewer',
+        path: path,
+        isroot: path == '',
+        join: require("path").join
+    }
+    var li = path.lastIndexOf('/');
+    if(li > -1) {
+        vm.lastpath = path.substring(0, li);
+    } else vm.lastpath = "";
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
+    if(docs.isFile(path)) {
+        docs.toHtml(path, function(err, html) {
+            if(err) {
+                res.render('error', { message: err });
+            }
+            else {
+                vm.content = html;
+                res.render('index', vm)
+            }
         });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+    } else {
+        docs.getStructure(path, function(err, structure) {
+            if(err) {
+                res.render('error', { message: err });
+            }
+            else {
+                vm.structure = structure;
+                res.render('index', vm);
+            }
+        });
+    }
 });
 
-
-module.exports = app;
+var server = app.listen(app_port, function(req, res){
+  console.log('Listening on port %d', server.address().port);
+});

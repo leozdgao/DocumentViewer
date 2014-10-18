@@ -1,23 +1,27 @@
-extends layout
-
-block content
-  .container
-    .row
-      .col-md-12
-        h1= title
-        p Welcome to #{title}
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+  body
+    .container
+      .row
+        .col-md-12
+          h1= title
+          p Welcome to #{title}
+      
+          p Current /#{path}
+            if(!isroot)
+              a(href="/#{lastpath}",style='padding-left:10px') back
+          if(structure)
+            each dir in structure.directories
+              img(src='/images/folder.png',width=16,height=16)
+              a(href="/#{join(path, dir)}",style='padding-left:10px') #{dir}
+              br
     
-        p Current /#{path}
-          if(!isroot)
-            a(href="/#{lastpath}",style='padding-left:10px') back
-        if(structure)
-          each dir in structure.directories
-            img(src='/images/folder.png',width=16,height=16)
-            a(href="/#{join(path, dir)}",style='padding-left:10px') #{dir}
-            br
-  
-          each file in structure.files
-            img(src='/images/file.png',width=16,height=16)
-            a(href="/#{join(path,file)}",style='padding-left:10px') #{file}
-            br
-        div!= content
+            each file in structure.files
+              img(src='/images/file.png',width=16,height=16)
+              a(href="/#{join(path,file)}",style='padding-left:10px') #{file}
+              br
+          div!= content
