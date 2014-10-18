@@ -1,4 +1,4 @@
-var docs = require("./../docs/docs")("D:\\docs");
+var docs = require("./../docs/docs")("example");
 var express = require('express');
 var router = express.Router();
 
