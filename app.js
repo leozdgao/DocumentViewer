@@ -1,6 +1,6 @@
 var express = require('express'),
     path = require('path'),
-    docs = require("./docs/docs")("example");
+    docs = require("./docs")("example");
 
 var app = express(),
     app_port = process.env.VCAP_APP_PORT || 3000;

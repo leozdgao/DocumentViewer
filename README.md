@@ -12,5 +12,5 @@ npm install
 You can specify the root path for documents like this:
 
 ```javascript
-var docs = require("./../docs/docs")("example");
+var docs = require("./docs")("example");
 ```
