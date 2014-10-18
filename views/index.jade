@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  p Current /#{path}
+
+
+  if(structure)
+    each dir in structure.directories
+      a(href=dir) #{dir}
+      br
+  
+    each file in structure.files
+      a(href=file) #{file}
+      br
+
+  div!= content
