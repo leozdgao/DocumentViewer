@@ -27,7 +27,7 @@ app.set('view engine', 'jade');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+//only router for this app, its param is the path of file
 app.use('/*', function(req, res) {
     var path = req.params[0];
     if(path.charAt(path.length -1) == "/")
@@ -54,7 +54,8 @@ app.use('/*', function(req, res) {
                 res.render('index', vm)
             }
         });
-    } else {
+    } 
+    else {
         docs.getStructure(path, function(err, structure) {
             if(err) {
                 res.render('error', { message: err });

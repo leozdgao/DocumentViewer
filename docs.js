@@ -1,9 +1,21 @@
 var fs = require("fs");
-var path = require("path");
-var async = require("async");
-var md = require("markdown");
+    path = require("path");
+    async = require("async");
+
+//init Remarkable
+var remarkable = require("remarkable");
+    md = new remarkable({
+        html:         true,         // Enable HTML tags in source
+        xhtmlOut:     false,        // Use '/' to close single tags (<br />)
+        breaks:       false,        // Convert '\n' in paragraphs into <br>
+        langPrefix:   'language-',  // CSS language prefix for fenced blocks
+        linkify:      true,         // autoconvert URL-like texts to links
+        typographer:  true          // Enable smartypants and other sweet transforms
+    });
+    
 
 module.exports = function(rootPath) {
+    //available extension for platform
 	var availableExt = [
 		".markdown",
 		".mdown",
@@ -66,11 +78,18 @@ module.exports = function(rootPath) {
 		},
 		//parse the md file to html
 		toHtml: function(root, cb) {
-			var root = path.join(rootPath, root);
-			fs.readFile(root, { encoding: "utf-8" }, function(err, data) {
-				if(err) cb(err);
-				else cb(null, md.parse(data));
-			});
+			var root = path.join(rootPath, root), result = "",
+                readable = fs.createReadStream(root, { encoding: "utf-8" });
+            
+            readable.on("data", function(chunk){
+                result += chunk;
+            });
+            readable.on("end", function(){
+                cb(null, md.render(result));
+            });
+            readable.on("", function(err){
+                cb(err);
+            });
 		}
 	}
 }
