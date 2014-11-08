@@ -9,7 +9,7 @@
     "dependencies": {
         "express": "~4.9.0",
         "jade": "~1.6.0",
-        "async": "*",
-        "remarkable": "*"
+        "remarkable": "*",
+		"q": "*"
     }
 }

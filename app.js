@@ -47,7 +47,7 @@ app.use('/*', function(req, res) {
     if(docs.isFile(path)) {
         docs.toHtml(path, function(err, html) {
             if(err) {
-                res.render('error', { message: err });
+                res.render('error', { err: err });
             }
             else {
                 vm.content = html;
@@ -58,7 +58,7 @@ app.use('/*', function(req, res) {
     else {
         docs.getStructure(path, function(err, structure) {
             if(err) {
-                res.render('error', { message: err });
+                res.render('error', { err: err });
             }
             else {
                 vm.structure = structure;

@@ -8,6 +8,5 @@ html
     .container
       .row
         .col-md-12
-          h1= message
-          h2= error.status
-          pre #{error.stack}
+          h1= err.message
+          h2= err.status

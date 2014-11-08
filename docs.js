@@ -1,6 +1,6 @@
-var fs = require("fs");
-    path = require("path");
-    async = require("async");
+var fs = require("fs"),
+    path = require("path"),
+	q = require("q");
 
 //init Remarkable
 var remarkable = require("remarkable");
@@ -36,39 +36,41 @@ module.exports = function(rootPath) {
 				directories: [],
 				files: []
 			};
-			var root = path.join(rootPath, root);
+			var root = path.join(rootPath, root),
+				_readdir = q.nfbind(fs.readdir);
 
-			async.waterfall([
-					//read directory to get names
-					function(cb) {
-						fs.readdir(root, cb);
-					},
-					//judge it is file or direcotry 
-					function(files, cb) {
-						async.eachSeries(files, function(file, callback) {
-							var dir = path.join(root, file);
-							var stat = fs.statSync(dir);
-							if(stat.isFile()) {
-								if(availableExt.indexOf(path.extname(file)) > -1) 
-									structure.files.push(file);
+			_readdir(root).then(function(files){
+				var promises = files.map(function(file){
+					return (function(file){
+						var defer = q.defer(),
+							dir = path.join(root, file),
+							stat = fs.statSync(dir);
 
-								callback();
+						if(stat.isFile()) {
+							if(availableExt.indexOf(path.extname(file)) > -1) {
+								structure.files.push(file);
 							}
-							else if(stat.isDirectory()) {
-								structure.directories.push(file);
+							defer.resolve();
+						}
+						else if(stat.isDirectory()) {
+							structure.directories.push(file);
+							defer.resolve();
+						}
+						else defer.reject();
 
-								callback();	
-							}
-							else callback();
-						}, function(err) {
-							cb(null, structure);
-						});
-					}
-				],
-				//return result
-				function(err, result) {
-					callback(err, result);
+						return defer.promise;
+					})(file);
 				});
+
+				return q.all(promises);
+			}).then(function(){
+				callback(null, structure);
+			}).catch(function(err){
+				if(typeof err == "string") {
+					err = { message : err, status : 500 }
+				}
+				callback(err);
+			});
 		},
 		//judge the specific path is a file or not
 		isFile: function(root) {
