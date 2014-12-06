@@ -1,15 +1,15 @@
 {
-    "name": "DocumentViewer",
-    "version": "0.0.1",
-    "description": "A platform for viewing markdown file.",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/leozdgao/DocumentViewer.git"
-    },
-    "dependencies": {
-        "express": "~4.9.0",
-        "jade": "~1.6.0",
-        "remarkable": "*",
-		"q": "*"
-    }
+  "name": "DocumentViewer",
+  "version": "0.0.1",
+  "description": "A platform for viewing markdown file.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/leozdgao/DocumentViewer.git"
+  },
+  "dependencies": {
+    "express": "~4.9.0",
+    "jade": "~1.6.0",
+    "q": "^1.1.2",
+    "remarkable": "^1.4.2"
+  }
 }
