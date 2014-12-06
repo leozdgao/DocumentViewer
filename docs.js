@@ -89,7 +89,7 @@ module.exports = function(rootPath) {
             readable.on("end", function(){
                 cb(null, md.render(result));
             });
-            readable.on("", function(err){
+            readable.on("error", function(err){
                 cb(err);
             });
 		}

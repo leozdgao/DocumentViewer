@@ -15,34 +15,30 @@ if(args.length > 2) {
 
 //load module
 var express = require('express'),
-    path = require('path'),
+    _join = require('path').join,
     docs = require("./docs")(docPath);
 
 var app = express(),
     app_port = process.env.VCAP_APP_PORT || port;
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', _join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(_join(__dirname, 'public')));
 
 //only router for this app, its param is the path of file
 app.use('/*', function(req, res) {
-    var path = req.params[0];
-    if(path.charAt(path.length -1) == "/")
-        path = path.substring(0, s.length - 1);
-
+    var path = req.params[0].replace(/\/$/, '');
     var vm = {
         title: 'Document Viewer',
         path: path,
-        isroot: path == '',
-        join: require("path").join
+		lastpath: '',
+        isroot: !path,
+        join: _join
     }
-    var li = path.lastIndexOf('/');
-    if(li > -1) {
-        vm.lastpath = path.substring(0, li);
-    } else vm.lastpath = "";
+
+	if(!vm.isroot) vm.lastpath = _join(path, '..');
 
     if(docs.isFile(path)) {
         docs.toHtml(path, function(err, html) {
