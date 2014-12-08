@@ -17,14 +17,10 @@ npm install
 ```
 
 ### Run
-You can run like this easily, the document root path is default to `example` and the port is default to 3000:
+You can run like this easily, the document root path is default to `example` and the port is default to 3000, if you need a special image folder, you can config it in config.json:
 
 ```
 node app.js
 ```
 
-you can specify your document root path and the port you want to monitor
-
-```
-node app.js D:\docs -p 8080
-```
+you can change your document root path and the port you want to monitor by changing configuration in config.json
