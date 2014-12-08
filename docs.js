@@ -42,21 +42,26 @@ module.exports = function(rootPath) {
 			_readdir(root).then(function(files){
 				var promises = files.map(function(file){
 					return (function(file){
-						var defer = q.defer(),
-							dir = path.join(root, file),
+						var defer = q.defer();
+
+                        //ignore file start with _
+                        if(/^_/.test(file)) defer.resolve();
+                        else {
+                            var	dir = path.join(root, file)
 							stat = fs.statSync(dir);
 
-						if(stat.isFile()) {
-							if(availableExt.indexOf(path.extname(file)) > -1) {
-								structure.files.push(file);
-							}
-							defer.resolve();
-						}
-						else if(stat.isDirectory()) {
-							structure.directories.push(file);
-							defer.resolve();
-						}
-						else defer.reject();
+                            if(stat.isFile()) {
+                                if(availableExt.indexOf(path.extname(file)) > -1) {
+                                    structure.files.push(file);
+                                }
+                                defer.resolve();
+                            }
+                            else if(stat.isDirectory()) {
+                                structure.directories.push(file);
+                                defer.resolve();
+                            }
+                            else defer.reject();
+                        }
 
 						return defer.promise;
 					})(file);
@@ -75,8 +80,11 @@ module.exports = function(rootPath) {
 		//judge the specific path is a file or not
 		isFile: function(root) {
 			var root = path.join(rootPath, root);
-			var stat = fs.statSync(root);
-			return stat.isFile();
+            if(fs.existsSync(root)) {
+                var stat = fs.statSync(root);
+			    return stat.isFile();
+            }
+			else return false;
 		},
 		//parse the md file to html
 		toHtml: function(root, cb) {

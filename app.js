@@ -1,22 +1,13 @@
-var args = process.argv.splice(2),
-    docPath = "example",
-    port = 3000;
-
-//handle console arguments
-if(args.length > 0) docPath = args[0];
-if(args.length > 2) {
-    args.splice(1);
-    args.forEach(function(arg, i) {
-        if(arg == "-p" && typeof args[i+1] != "undefined") {
-            port = args[i+1];
-        }
-    });
-}
+//get config
+var config = require('./config.json');
+var _join = require('path').join;
+var docPath = config.docpath || _join(__dirname, 'example'),
+    imagesPath = config.imagespath || '',
+    port = config.port || 3000;
 
 //load module
 var express = require('express'),
-    _join = require('path').join,
-    docs = require("./docs")(docPath);
+    docs = require('./docs')(docPath);
 
 var app = express(),
     app_port = process.env.VCAP_APP_PORT || port;
@@ -26,6 +17,9 @@ app.set('views', _join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(express.static(_join(__dirname, 'public')));
+
+//add images path if exist
+if(!/^\s*$/.test(imagesPath)) app.use(express.static(imagesPath));
 
 //only router for this app, its param is the path of file
 app.use('/*', function(req, res) {
