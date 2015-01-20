@@ -10,18 +10,41 @@ html
         .col-md-12
           h1= title
           p Welcome to #{title}
-      
-          p Current /#{path}
-            if(!isroot)
-              a(href="/#{lastpath}",style='padding-left:10px') back
+          
+          ul.breadcrumbs
+            each path in breadcrumbs
+              li
+                a(href=path.link) #{path.text}
+          if(!isroot)
+            a(href="/#{lastpath}",style='padding-left:10px') back
           if(structure)
-            each dir in structure.directories
-              img(src='/images/folder.png',width=16,height=16)
-              a(href="/#{join(path, dir)}",style='padding-left:10px') #{dir}
-              br
-    
-            each file in structure.files
-              img(src='/images/file.png',width=16,height=16)
-              a(href="/#{join(path,file)}",style='padding-left:10px') #{file}
-              br
+            div.structure
+              each dir in structure.directories
+                img(src='/images/folder.png',width=16,height=16)
+                a(href="/#{join(path, dir)}",style='padding-left:10px') #{dir}
+                br
+      
+              each file in structure.files
+                img(src='/images/file.png',width=16,height=16)
+                a(href="/#{join(path,file)}",style='padding-left:10px') #{file}
+                br
           div!= content
+
+  style.
+    ul.breadcrumbs {
+      padding-left: 0px;
+      margin-left: 0px;
+      display: inline;
+    }
+    ul.breadcrumbs:before {
+      content: "Path: "
+    }
+    .breadcrumbs li {
+      display: inline-block;
+    }
+    .breadcrumbs li:before {
+      content: "/";
+    }
+    .structure {
+      margin-top: 10px;
+    }

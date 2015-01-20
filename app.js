@@ -24,8 +24,19 @@ if(!/^\s*$/.test(imagesPath)) app.use(express.static(imagesPath));
 //only router for this app, its param is the path of file
 app.use('/*', function(req, res) {
     var path = req.params[0].replace(/\/$/, '');
+    var breadcrumbs = path.split("/") || [];
+    var last = "/"
+    breadcrumbs = breadcrumbs.map(function(item) {
+
+        return {
+            text: item,
+            link: (last = _join(last, item))
+        }
+    });
+    
     var vm = {
         title: 'Document Viewer',
+        breadcrumbs: breadcrumbs,
         path: path,
 		lastpath: '',
         isroot: !path,
