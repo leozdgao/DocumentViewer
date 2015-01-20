@@ -1,6 +1,6 @@
 var fs = require("fs"),
     path = require("path"),
-	q = require("q");
+	Then = require("thenjs");
 
 //init Remarkable
 var remarkable = require("remarkable");
@@ -36,41 +36,35 @@ module.exports = function(rootPath) {
 				directories: [],
 				files: []
 			};
-			var root = path.join(rootPath, root),
-				_readdir = q.nfbind(fs.readdir);
 
-			_readdir(root).then(function(files){
-				var promises = files.map(function(file){
-					return (function(file){
-						var defer = q.defer();
+			root = path.join(rootPath, root);
 
-                        //ignore file start with _
-                        if(/^_/.test(file)) defer.resolve();
-                        else {
-                            var	dir = path.join(root, file)
-							stat = fs.statSync(dir);
+			Then(function (cont) {
+				fs.readdir(root, cont);
+			})
+			.then(function (cont, files) {
+				cont(null, files);
+			})
+			.each(null, function (cont, file) {
+				//ignore file start with _
+				if(!/^_/.test(file)) {
+	                var	dir = path.join(root, file)
+					stat = fs.statSync(dir);
 
-                            if(stat.isFile()) {
-                                if(availableExt.indexOf(path.extname(file)) > -1) {
-                                    structure.files.push(file);
-                                }
-                                defer.resolve();
-                            }
-                            else if(stat.isDirectory()) {
-                                structure.directories.push(file);
-                                defer.resolve();
-                            }
-                            else defer.reject();
-                        }
+	                if(stat.isFile() && availableExt.indexOf(path.extname(file)) > -1) {
+                        structure.files.push(file);
+	                }
+	                else if(stat.isDirectory()) {
+	                    structure.directories.push(file);
+	                }
+				}
 
-						return defer.promise;
-					})(file);
-				});
-
-				return q.all(promises);
-			}).then(function(){
+				cont();
+			})
+			.then(function (cont) {
 				callback(null, structure);
-			}).catch(function(err){
+			}) 
+			.fail(function (cont, err) {
 				if(typeof err == "string") {
 					err = { message : err, status : 500 }
 				}

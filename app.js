@@ -7,6 +7,7 @@ var docPath = config.docpath || _join(__dirname, 'example'),
 
 //load module
 var express = require('express'),
+    Then = require("thenjs");
     docs = require('./docs')(docPath);
 
 var app = express(),

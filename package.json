@@ -1,6 +1,6 @@
 {
   "name": "DocumentViewer",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "A platform for viewing markdown file.",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "dependencies": {
     "express": "~4.9.0",
     "jade": "~1.6.0",
-    "q": "^1.1.2",
-    "remarkable": "^1.4.2"
+    "remarkable": "^1.4.2",
+    "thenjs": "^1.4.5"
   }
 }
