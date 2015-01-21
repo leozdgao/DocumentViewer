@@ -62,7 +62,19 @@ module.exports = function(rootPath) {
 				cont();
 			})
 			.then(function (cont) {
-				callback(null, structure);
+				// process readme.md
+				var readme;
+				var temps = structure.files.filter(function(file) {
+					return file.toLowerCase().indexOf("readme") > -1;
+				}) || [];
+				if(temps.length > 0) {
+
+					var file = temps[0];
+					var content = fs.readFileSync(path.join(root, file)).toString();
+					readme = md.render(content);
+				}
+
+				callback(null, structure, readme);
 			}) 
 			.fail(function (cont, err) {
 				if(typeof err == "string") {

@@ -36,8 +36,27 @@ if(!/^\s*$/.test(imagesPath)) app.use(express.static(imagesPath));
 //only router for this app, its param is the path of file
 app.use('/*', function(req, res) {
     var path = req.params[0].replace(/\/$/, '');
+    var breadcrumbs = path.split("/") || [];
+    var last = "/"
+    breadcrumbs = breadcrumbs.map(function(item, index) {
+
+        if(index == breadcrumbs.length - 1) {
+            return {
+                text: item    
+            }
+        }
+        else {
+            return {
+                text: item,
+                link: (last = _join(last, item))
+            }    
+        }
+        
+    });
+    
     var vm = {
         title: 'Document Viewer',
+        breadcrumbs: breadcrumbs,
         path: path,
 		lastpath: '',
         isroot: !path,
@@ -58,11 +77,12 @@ app.use('/*', function(req, res) {
         });
     } 
     else {
-        docs.getStructure(path, function(err, structure) {
+        docs.getStructure(path, function(err, structure, readme) {
             if(err) {
                 res.render('error', { err: err });
             }
             else {
+                vm.content = readme;
                 vm.structure = structure;
                 res.render('index', vm);
             }
