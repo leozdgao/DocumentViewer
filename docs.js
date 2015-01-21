@@ -26,12 +26,13 @@ module.exports = function(rootPath) {
 		".mdtxt",
 		".mdtext",
 		".text",
-		".txt"
+		".txt",
+		".html"
 	];
 
 	return {
 		//get directory structure of specific folder
-		getStructure: function(root, callback) {
+		getStructure: function(root, excludeFolder, callback) {
 			var structure = {
 				directories: [],
 				files: []
@@ -40,16 +41,26 @@ module.exports = function(rootPath) {
 			root = path.join(rootPath, root);
 
 			Then(function (cont) {
+
 				fs.readdir(root, cont);
 			})
 			.then(function (cont, files) {
+
+				if(Array.isArray(excludeFolder)) {
+
+					files = files.filter(function(item) {
+			            return !excludeFolder.some(function(exclude) {
+			                return exclude == item;
+			            });
+			        });	
+				}
 				cont(null, files);
 			})
 			.each(null, function (cont, file) {
 				//ignore file start with _
 				if(!/^_/.test(file)) {
-	                var	dir = path.join(root, file)
-					stat = fs.statSync(dir);
+	                var	dir = path.join(root, file);
+					var stat = fs.statSync(dir);
 					var filePath = dir.replace(rootPath, '');
 
 	                if(stat.isFile() && availableExt.indexOf(path.extname(file)) > -1) {
@@ -71,6 +82,8 @@ module.exports = function(rootPath) {
 				if(temps.length > 0) {
 
 					var file = temps[0];
+					var index = file.lastIndexOf("\\");
+					file = file.slice(index + 1);
 					var content = fs.readFileSync(path.join(root, file)).toString();
 					readme = md.render(content);
 				}
