@@ -13,9 +13,20 @@ var express = require('express'),
 var app = express(),
     app_port = process.env.VCAP_APP_PORT || port;
 
+// config handlebars
+var exphbs = require("express-handlebars");
+hbs = exphbs.create({
+    defaultLayout: "main",
+    extname: ".hbs",
+    helpers: {
+        join: _join
+    }
+});
+
 // view engine setup
+app.engine('handlebars', hbs.engine);
 app.set('views', _join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'handlebars');
 
 app.use(express.static(_join(__dirname, 'public')));
 
