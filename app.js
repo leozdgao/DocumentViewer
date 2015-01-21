@@ -17,15 +17,18 @@ var app = express(),
 var exphbs = require("express-handlebars");
 hbs = exphbs.create({
     defaultLayout: "main",
-    extname: ".hbs",
     helpers: {
-        join: _join
+        filename: function(context, options) {
+            
+            var index = context.lastIndexOf('\\');
+            return context.slice(index + 1);
+        }
     }
 });
 
 // view engine setup
 app.engine('handlebars', hbs.engine);
-app.set('views', _join(__dirname, 'views'));
+// app.set('views', _join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
 
 app.use(express.static(_join(__dirname, 'public')));
@@ -46,12 +49,12 @@ app.use('/*', function(req, res) {
             }
         }
         else {
+            last = _join(last, item);
             return {
                 text: item,
-                link: (last = _join(last, item))
+                link: last
             }    
         }
-        
     });
     
     var vm = {
@@ -59,7 +62,7 @@ app.use('/*', function(req, res) {
         breadcrumbs: breadcrumbs,
         path: path,
 		lastpath: '',
-        isroot: !path,
+        isNotRoot: !!path,
         join: _join
     }
 
@@ -72,7 +75,7 @@ app.use('/*', function(req, res) {
             }
             else {
                 vm.content = html;
-                res.render('index', vm)
+                res.render('index', vm);
             }
         });
     } 

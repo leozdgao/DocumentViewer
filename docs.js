@@ -50,12 +50,13 @@ module.exports = function(rootPath) {
 				if(!/^_/.test(file)) {
 	                var	dir = path.join(root, file)
 					stat = fs.statSync(dir);
+					var filePath = dir.replace(rootPath, '');
 
 	                if(stat.isFile() && availableExt.indexOf(path.extname(file)) > -1) {
-                        structure.files.push(file);
+                        structure.files.push(filePath);
 	                }
 	                else if(stat.isDirectory()) {
-	                    structure.directories.push(file);
+	                    structure.directories.push(filePath);
 	                }
 				}
 
