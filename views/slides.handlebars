@@ -1,0 +1,48 @@
+<div class="box borderred">
+  <div class="heading">
+      {{#if isNotRoot}}
+      <a href="/slides/" class="link">Home</a>
+      {{else}}
+      <span>Home</span>
+      {{/if}}
+      <ul class="breadcrumbs">
+        {{#each breadcrumbs}}
+        <li>
+          {{#if link}}
+          <a href="/slides{{link}}">{{text}}</a>
+          {{else}}
+          <a>{{text}}</a>
+          {{/if}}
+        </li>
+        {{/each}}
+      </ul>
+  </div>
+  {{#if structure}}
+  <div class="body">
+    {{#each structure.directories}}
+    <div class="list-item">
+      <span class="glyphicon glyphicon-folder-close"></span>
+      <a href="/slides{{this}}" style='padding-left:10px'>{{#filename this}}{{/filename}}</a>
+    </div>
+    {{/each}}
+    {{#each structure.files}}
+    <div class="list-item">
+      <span class="glyphicon glyphicon-list-alt"></span>
+      <a href="/slides{{this}}" style='padding-left:10px'>{{#filename this}}{{/filename}}</a>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>
+{{#if content}}
+<div class="box borderred">
+  <h4 class="heading">
+    {{#if structure}}
+    <span>ReadMe</span> 
+    {{else}}
+    <span>{{path}}</span>
+    {{/if}}
+  </h4>
+  <div class="body content">{{{content}}}</div>
+</div>
+{{/if}}
