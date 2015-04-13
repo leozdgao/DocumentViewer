@@ -2,7 +2,7 @@ var config = require('../config.json');
 var _join = require('path').join;
 
 module.exports = function(req, res) {
-    var docs = require('../docs')(config.docpath || _join(__dirname, '..', 'example'));
+    var docs = require('../utils/static')(config.docpath || _join(__dirname, '..', 'example'));
 
     var vm = {
         title: 'Document Viewer',

@@ -46,3 +46,13 @@ ul.breadcrumbs li:before {
 .box .body .list-item:last-child {
   border-bottom: 0px;
 }
+
+#emptymsg {
+  display: block;
+  margin: 10px auto;
+  background: #eee;
+  width: 200px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px;
+}

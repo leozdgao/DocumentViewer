@@ -7,17 +7,9 @@
 	<link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
 </head>
 <body>
+	{{> nav}}
 	<div class="container">
-		<div class="row">
-			<dvi class="col-md-12">
-				<h1>{{title}}</h1>
-				<p>Welcome to {{title}}</p>
-				
-				{{> nav}}
-
-				{{{body}}}		
-			</dvi>
-		</div>
+		{{{body}}}
 	</div>
 </body>
 </html>

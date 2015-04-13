@@ -1,0 +1,17 @@
+<button class="btn btn-default">Add Tip</button>
+{{#if isEmpty}}
+<span id="emptymsg">No tips now. You can <a href="/tips/new">add a new one</a>.</span>    
+{{else}}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>CreateDate</th>
+        </tr>   
+    </thead>
+    <tbody>
+        {{#each tips}}
+        {{/each}}   
+    </tbody>
+</table>
+{{/if}}

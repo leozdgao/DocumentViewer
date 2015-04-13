@@ -1,7 +1,7 @@
 <div class="box borderred">
   <div class="heading">
       {{#if isNotRoot}}
-      <a href="/docs/" class="link">Home</a>
+      <a href="/{{type}}/" class="link">Home</a>
       {{else}}
       <span>Home</span>
       {{/if}}
@@ -9,7 +9,7 @@
         {{#each breadcrumbs}}
         <li>
           {{#if link}}
-          <a href="/docs{{link}}">{{text}}</a>
+          <a href="/{{type}}{{link}}">{{text}}</a>
           {{else}}
           <a>{{text}}</a>
           {{/if}}
@@ -22,13 +22,13 @@
     {{#each structure.directories}}
     <div class="list-item">
       <span class="glyphicon glyphicon-folder-close"></span>
-      <a href="/docs{{this}}" style='padding-left:10px'>{{#filename this}}{{/filename}}</a>
+      <a href="/{{../type}}{{this}}" style='padding-left:10px'>{{#filename this}}{{/filename}}</a>
     </div>
     {{/each}}
     {{#each structure.files}}
     <div class="list-item">
       <span class="glyphicon glyphicon-list-alt"></span>
-      <a href="/docs{{this}}" style='padding-left:10px'>{{#filename this}}{{/filename}}</a>
+      <a href="/{{../type}}{{this}}" style='padding-left:10px'>{{#filename this}}{{/filename}}</a>
     </div>
     {{/each}}
   </div>

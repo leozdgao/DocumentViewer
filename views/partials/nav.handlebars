@@ -1,5 +1,12 @@
-<ul class="nav nav-pills">
-	{{#navItem type 'docs'}}<a href="/docs">Documents</a>{{/navItem}}
-	{{#navItem type 'slides'}}<a href="/slides">Slides</a>{{/navItem}}
-	{{#navItem type 'tips'}}<a href="/tips">Tips</a>{{/navItem}}
-</ul>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="/docs" class="navbar-brand">Document Viewer</a>
+        </div>
+        <ul class="nav navbar-nav">
+            {{#navItem type 'docs'}}<a href="/docs">Documents</a>{{/navItem}}
+            {{#navItem type 'slides'}}<a href="/slides">Slides</a>{{/navItem}}
+            {{#navItem type 'tips'}}<a href="/tips">Tips</a>{{/navItem}}    
+        </ul>   
+    </div>
+</nav>

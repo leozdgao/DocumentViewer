@@ -1,15 +1,11 @@
 //get config
 var config = require('./config.json');
 var _join = require('path').join;
-var imagesPath = config.imagespath || '',
-    port = config.port || 3000;
+var imagesPath = config.imagespath || '';
 
-//load module
+// load module
 var express = require('express'),
-    Then = require("thenjs");
-
-var app = express(),
-    app_port = process.env.VCAP_APP_PORT || port;
+    app = express();
 
 // config handlebars
 var exphbs = require("express-handlebars");
@@ -20,26 +16,64 @@ hbs = exphbs.create({
 
 // view engine setup
 app.engine('handlebars', hbs.engine);
-// app.set('views', _join(__dirname, 'views'));
 app.set('view engine', 'handlebars');
+
+// promisify mongoose
+var Promise = require("bluebird");
+var mongoose = require("mongoose");
+Promise.promisifyAll(mongoose);
 
 // serve static
 app.use(express.static(_join(__dirname, 'public')));
-
-app.use('/slides', require('./utils/preprocess'), require('./routers/slides'));
-
-//add images path if exist
+// add images path if exist
 if(!/^\s*$/.test(imagesPath)) app.use(express.static(imagesPath));
 
-//only router for this app, its param is the path of file
+// routers
+app.use('/slides', require('./utils/preprocess'), require('./routers/slides'));
 app.use('/docs', require('./utils/preprocess'), require('./routers/docs'));
+app.use('/tips', require('./routers/tips'));
+// other request
+app.use(function(req, res) { res.redirect("/docs"); });
 
-app.use(function(req, res) {
+var port = process.env.PORT || config.port || 3000;
+var connected = false;
 
-    res.redirect("/docs");
-})
+// set db connectiion config, timeout 5s
+var dbConfig = {
+    server: {
+        socketOptions: { connectTimeoutMS: 5000 }
+    }
+};
 
-// listening
-var server = app.listen(app_port, function(req, res){
-  console.log('Listening on port %d', server.address().port);
+mongoose.connect(config.dbConnection, dbConfig);
+
+mongoose.connection.on("connected", function() {
+
+    console.log("Connected to DB...");
+    connected = true;
+});
+
+mongoose.connection.on("disconnected", function() {
+
+    // after a successful connecting, 
+    // mongoose will reconnect automatically if connection disconnected.
+    if(!connected) {
+
+        console.log("DBConnection closed. Try to reconnect.");
+
+        setTimeout(function() {
+
+            mongoose.connection.open(config.dbConnection, dbConfig);
+        }, 5000);   
+    }
+});
+
+mongoose.connection.on("error", function(err) {
+
+    console.log("Error occurred: " + err.message);
+});
+
+app.listen(port, function() {
+
+    console.log("Server listening on port " + port);
 });

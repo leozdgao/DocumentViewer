@@ -7,9 +7,12 @@
     "url": "git://github.com/leozdgao/DocumentViewer.git"
   },
   "dependencies": {
+    "bluebird": "^2.9.24",
     "express": "~4.9.0",
     "express-handlebars": "^1.1.0",
+    "formidable": "^1.0.17",
     "jade": "~1.6.0",
+    "mongoose": "^4.0.1",
     "remarkable": "^1.4.2",
     "thenjs": "^1.4.5"
   }

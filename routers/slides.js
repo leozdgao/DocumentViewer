@@ -2,7 +2,7 @@ var config = require('../config.json');
 var _join = require('path').join;
 
 module.exports = function(req, res) {
-    var docs = require('../docs')(_join(__dirname, '..', config.slidespath));
+    var docs = require('../utils/static')(_join(__dirname, '..', config.slidespath));
     var excludeFolder = ["css", "js", "lib", "plugin"];
 
     var vm = {
@@ -20,7 +20,7 @@ module.exports = function(req, res) {
         else {
             vm.content = readme;
             vm.structure = structure;
-            res.render('slides', vm);
+            res.render('index', vm);
         }
     });
 };
