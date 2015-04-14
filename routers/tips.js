@@ -17,12 +17,19 @@ router.post('/:id/attachment', function(req, res) {
 });
 
 // new tip
+router.get('/new', function(req, res) {
+    res.render('newtip', {
+        type: 'tips'
+    });
+});
+
 router.post('/new', function(req, res) {
     var form = new formidable.IncomingForm();
     config.attpath && (form.uploadDir = config.attpath);
     
     form.parse(req, function(err, fields, files) {
         // response
+        console.log(fields); console.log(files);
         res.end();
     });
 });
@@ -43,7 +50,6 @@ router.use('/:id', function(req, res) {
 // get all tip
 router.use('/', function(req, res) {
     var vm = {
-        title: 'Document Viewer',
         type: 'tips',
         tips: []
     };

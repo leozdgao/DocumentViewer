@@ -3,6 +3,6 @@
     "docpath": "",
     "imagespath": "",
     "slidespath": "public/slides",
-    "attpath": "",
+    "attpath": "D:\\temp",
     "dbConnection": "mongodb://10.10.73.209:27017/Doc"
 }

@@ -1,0 +1,42 @@
+<h2>Create a new Tip</h2>
+<form id="tipform">
+    <fieldset>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input class="form-control" id="title" name="title">
+        </div>
+        <div class="form-group">
+            <label for="keywords">Key Words (Split by ',')</label>
+            <input class="form-control" id="keywords" name="keywords">
+        </div>
+        <div class="content-group">
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" name="content" id="content" rows="10"></textarea>
+            </div>
+        </div>
+        <div class="dropbox clearfix">
+            <div><label for="">Attachments</label></div>
+            <div class="inner-box">
+                <section>
+                    <p>Drag and Drop !</p>
+                    <div class="file-select">
+                        <span>or choose a file</span>
+                        <div class="cross"></div>    
+                    </div>
+                </section>
+            </div>
+            <div class="attlist"></div>
+        </div>
+        <button class="btn btn-default">Submit</button>
+    </fieldset>
+</form>
+
+<input id="uploader" name="files" type="file" style="display:none;" multiple>
+<div class="backdrop">
+    <section>
+        <div class="spinner glyphicon glyphicon-repeat"></div>
+        <p>Committing...</p>    
+    </section>
+</div>
+<script src="/js/script.js"></script>
