@@ -179,14 +179,9 @@ ul.breadcrumbs li:before {
 }
 .spinner {
     font-size: 30px;
-    -webkit-animation: spin 1s infinite;
     animation: spin 1s infinite;
 }
 
-@-webkit-keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(359deg); }
-}
 @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(359deg); }
