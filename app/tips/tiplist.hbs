@@ -5,16 +5,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-3">Title</th>
-            <th class="col-sm-7">CreateDate</th>
+            <th class="col-sm-6">Title</th>
+            <th class="col-sm-4">CreateDate</th>
             <th class="col-sm-2">Action</th>
         </tr>   
     </thead>
     <tbody>
         {{#each tips}}
         <tr>
-            <td>{{title}}</td>
-            <td>{{createDate}}</td>
+            <td><a href="/tips/{{_id}}">{{title}}</a></td>
+            <td>{{#date createDate 'MM-DD-YYYY'}}{{/date}}</td>
             <td>
                 <button class="btn btn-xs btn-success">Edit</button>
                 <button class="btn btn-xs btn-danger">Remove</button>

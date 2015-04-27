@@ -1,0 +1,10 @@
+<a href="/tips">&lt;&lt; Back</a>
+<div class="tip-content">
+    <h2>{{tip.title}}</h2>
+    <ul class="tip-atts">
+        {{#each tip.attachments}}
+        <li class="tip-att"><a href="/tips/att/{{_id}}?tid={{../tip._id}}">{{fileName}}</a></li>
+        {{/each}}
+    </ul>
+    <div>{{tip.content}}</div>
+</div>

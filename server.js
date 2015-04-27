@@ -17,7 +17,7 @@ hbs = exphbs.create({
     helpers: require('./utils/hbshelpers')
 });
 
-app.locals.isdev = ( config.env.toLowerCase() == 'dev' );
+app.locals.isdev = ( config.env.toLowerCase() === 'dev' );
 
 // view engine setup
 app.engine('hbs', hbs.engine);
