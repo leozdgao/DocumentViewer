@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(e) {
+
     var form = document.getElementById('tipform');
     var btnSubmit = form.querySelector('button');
     var uploader = document.getElementById('uploader');
@@ -6,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
     var cross = document.querySelector('.file-select .cross');
     var attlist = document.querySelector('.attlist');
     var backdrop = document.querySelector('.backdrop');
+    var new_tip_errmsg = document.getElementById('new_tip_errmsg');
 
     box.addEventListener('dragover', function(e) {
         e.preventDefault();
@@ -14,11 +16,11 @@ document.addEventListener('DOMContentLoaded', function(e) {
     // effect
     var counter = 0;
     box.addEventListener('dragenter', function(e) {
-        counter++;
+        counter ++;
         box.classList.add('active');
     });
     box.addEventListener('dragleave', function(e) {
-        counter--;
+        counter --;
         if(!counter) box.classList.remove('active');
     });
 
@@ -54,7 +56,13 @@ document.addEventListener('DOMContentLoaded', function(e) {
         // form validate
         var tbTitle = document.getElementById('title');
         var tbContent = document.getElementById('content');
-        if(!checkRequire([tbTitle, tbContent])) return;
+        if(!checkRequire([tbTitle, tbContent])) {
+
+            new_tip_errmsg.textContent = "Required fields should be populated.";
+            return;
+        } 
+
+        new_tip_errmsg.textContent = "";
 
         // show backdrop
         backdrop.style.display = 'block';
@@ -72,7 +80,11 @@ document.addEventListener('DOMContentLoaded', function(e) {
             }, 2000);
         };
         xhr.onerror = function() {
-
+            try {
+                var error = JSON.parse(xhr.response);
+                new_tip_errmsg.textContent = error.message;
+            }
+            catch(e) { new_tip_errmsg.textContent = "Unkown error."; }
         };
         xhr.timeout = 5000; // 5s timeout
         xhr.send(formData);
@@ -86,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
     function checkRequire(controls) {
         var valid = true;
         [].forEach.call(controls, function(control) {
-            if(!control.value) {
+            if(/^\s*$/.test(control.value)) {
                 control.parentElement.classList.add('has-error');
                 valid = false;
             }

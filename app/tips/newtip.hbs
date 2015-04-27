@@ -22,7 +22,7 @@
                     <p>Drag and Drop !</p>
                     <div class="file-select">
                         <span>or choose a file</span>
-                        <div class="cross"></div>    
+                        <div class="cross"></div>
                     </div>
                 </section>
             </div>
@@ -30,6 +30,7 @@
         </div>
         <button class="btn btn-primary">Submit</button>
         <button class="btn btn-default">Cancel</button>
+        <span id="new_tip_errmsg"></span>
     </fieldset>
 </form>
 
@@ -37,7 +38,12 @@
 <div class="backdrop">
     <section>
         <div class="spinner glyphicon glyphicon-repeat"></div>
-        <p>Committing...</p>    
+        <p>Committing...</p>
     </section>
 </div>
+{{#if isdev}}
+<script src="/script.js"></script>
+{{else}}
 <script src="/script.min.js"></script>
+{{/if}}
+

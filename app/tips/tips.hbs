@@ -5,12 +5,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>CreateDate</th>
+            <th class="col-sm-3">Title</th>
+            <th class="col-sm-9">CreateDate</th>
         </tr>   
     </thead>
     <tbody>
         {{#each tips}}
+        <tr>
+            <td>{{title}}</td>
+            <td>{{createDate}}</td>
+        </tr>
         {{/each}}   
     </tbody>
 </table>
