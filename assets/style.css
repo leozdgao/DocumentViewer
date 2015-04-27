@@ -73,9 +73,7 @@ ul.breadcrumbs li:before {
     margin-left: -7.5px;
 }
 .cross:after {
-    -webkit-transform: rotate(90deg);
-        -ms-transform: rotate(90deg);
-            transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 .cross:hover, .cross:hover:before, .cross:hover:after {
     border-color: green;
@@ -100,14 +98,12 @@ ul.breadcrumbs li:before {
 .attlist .att .content {
     position: relative;
     left: 5px;
-    -webkit-transition: all 0.3s;
-            transition: all 0.3s;
+    transition: all 0.3s;
 }
 .attlist .att .glyphicon {
     cursor: pointer;
     opacity: 0;
-    -webkit-transition: all 0.3s;
-            transition: all 0.3s;
+    transition: all 0.3s;
 }
 .attlist .att:hover .glyphicon {
     opacity: 1;
@@ -143,18 +139,12 @@ ul.breadcrumbs li:before {
 }
 .spinner {
     font-size: 30px;
-    -webkit-animation: spin 1s infinite;
-            animation: spin 1s infinite;
-}
-
-@-webkit-keyframes spin {
-    from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-    to { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+    animation: spin 1s infinite;
 }
 
 @keyframes spin {
-    from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-    to { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(359deg); }
 }
 
 #new_tip_errmsg {

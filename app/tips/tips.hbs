@@ -6,7 +6,8 @@
     <thead>
         <tr>
             <th class="col-sm-3">Title</th>
-            <th class="col-sm-9">CreateDate</th>
+            <th class="col-sm-7">CreateDate</th>
+            <th class="col-sm-2">Action</th>
         </tr>   
     </thead>
     <tbody>
@@ -14,6 +15,10 @@
         <tr>
             <td>{{title}}</td>
             <td>{{createDate}}</td>
+            <td>
+                <button class="btn btn-xs btn-success">Edit</button>
+                <button class="btn btn-xs btn-danger">Remove</button>
+            </td>
         </tr>
         {{/each}}   
     </tbody>
