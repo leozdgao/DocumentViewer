@@ -4,7 +4,11 @@
 	<meta charset="UTF-8">
 	<title>Document Viewer</title>
 	<link rel="stylesheet" href="/bootstrap.min.css">
+	{{#if isdev}}
+	<link rel="stylesheet" href="/style.css">
+	{{else}}
 	<link rel="stylesheet" href="/style.min.css">
+	{{/if}}
 </head>
 <body>
 	{{> nav}}

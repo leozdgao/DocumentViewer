@@ -3,7 +3,7 @@ var router = express.Router();
 var formidable = require('formidable');
 var config = require('../config.json');
 
-var Tip = require('../data/tipcontroller');
+var Tip = require('../service/tipcontroller');
 
 // add additional attachments
 router.post('/:id/attachment', function(req, res) {
@@ -18,7 +18,7 @@ router.post('/:id/attachment', function(req, res) {
 
 // new tip
 router.get('/new', function(req, res) {
-    res.render('newtip', {
+    res.render('tips/newtip', {
         type: 'tips'
     });
 });
@@ -58,7 +58,7 @@ router.use('/', function(req, res) {
         vm.tips = data || [];
         if(vm.tips.length <= 0) vm.isEmpty = true;
 
-        res.render('tips', vm);
+        res.render('tips/tips', vm);
     }).catch(function(e) {
         res.render('error', {
             status: 500,

@@ -14,5 +14,5 @@ module.exports = {
 	],
 	destJs: 'script.js',
 	destCss: 'style.css',
-	release: './public'
+	release: './assets'
 };

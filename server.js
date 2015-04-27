@@ -10,13 +10,19 @@ var express = require('express'),
 // config handlebars
 var exphbs = require("express-handlebars");
 hbs = exphbs.create({
+    layoutsDir: "app/layouts",
+    partialsDir: "app/partials",
+    extname: ".hbs",
     defaultLayout: "main",
     helpers: require('./utils/hbshelpers')
 });
 
+app.locals.isdev = ( config.env.toLowerCase() == 'dev' );
+
 // view engine setup
-app.engine('handlebars', hbs.engine);
-app.set('view engine', 'handlebars');
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', 'app');
 
 // promisify mongoose
 var Promise = require("bluebird");
@@ -24,7 +30,7 @@ var mongoose = require("mongoose");
 Promise.promisifyAll(mongoose);
 
 // serve static
-app.use(express.static(_join(__dirname, 'public')));
+app.use(express.static(_join(__dirname, 'assets')));
 // add images path if exist
 if(!/^\s*$/.test(imagesPath)) app.use(express.static(imagesPath));
 

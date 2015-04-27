@@ -1,0 +1,36 @@
+.box {
+  margin-top: 10px;
+}
+.box.borderred {
+  border: 1px solid #ccc;
+  border-bottom: 0px;
+}
+.box .heading {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  margin: 0px;
+  background: #eee;
+}
+.box .body  {
+  border-bottom: 1px solid #ccc;
+}
+.box .body.content {
+  padding: 10px;
+}
+.box .body .list-item {
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+}
+.box .body .list-item:last-child {
+  border-bottom: 0px;
+}
+
+#emptymsg {
+  display: block;
+  margin: 10px auto;
+  background: #eee;
+  width: 200px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px;
+}

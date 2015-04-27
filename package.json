@@ -6,6 +6,7 @@
     "type": "git",
     "url": "git://github.com/leozdgao/DocumentViewer.git"
   },
+  "main": "server.js",
   "dependencies": {
     "bluebird": "^2.9.24",
     "express": "~4.9.0",
