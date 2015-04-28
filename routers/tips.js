@@ -108,7 +108,8 @@ router.use('/tip/:id', function(req, res) {
                 return att;
             });
             res.render('tips/tipview', {
-                tip: tip
+                tip: tip,
+                type: "tips"
             })
         })
         .catch(function(e) {
@@ -170,7 +171,7 @@ router.use('/:page?', function(req, res) {
 });
 
 router.use('/tag/:tag', function(req, res) {
-    
+
 });
 
 module.exports = router;

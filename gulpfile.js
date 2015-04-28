@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var fs = require('fs');
 var files = require('./files');
 
 // load dependencies
@@ -15,8 +16,14 @@ var jshint = require('gulp-jshint');
 var del = require('del');
 
 // release
-gulp.task('default', ['release']);
+gulp.task('default', ['release', 'config:release']);
 gulp.task('release', ['release:css', 'release:js']); 
+
+gulp.task('config:release', function() {
+	var config = require('./config.json');
+	config.env = 'release';
+	fs.writeFileSync('config.json', JSON.stringify(config, null, 4), 'utf-8');
+});
 
 gulp.task('release:css', function() {
 
@@ -49,8 +56,14 @@ gulp.task('release:js', function() { // add jslint and uTest later maybe
 
 //-----------------------------------------------> for dev
 
-gulp.task('dev', ['concat', 'watch', 'server']);
+gulp.task('dev', ['concat', 'config:dev', 'watch', 'server']);
 gulp.task('concat', ['concat:css', 'concat:js']);
+
+gulp.task('config:dev', function() {
+	var config = require('./config.json');
+	config.env = 'dev';
+	fs.writeFileSync('config.json', JSON.stringify(config, null, 4), 'utf-8');
+});
 
 gulp.task('server', function() {
 
