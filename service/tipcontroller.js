@@ -23,6 +23,14 @@ exports.remove = function(id) {
 	return Tip.findOneAndRemoveAsync({ _id: id });
 };
 
+exports.page = function(page, limit) {
+	return Tip.aggregateAsync([{ $skip: (page - 1) * limit }, { $limit: limit }]);
+};
+
+exports.count = function(conditions) {
+	return Tip.countAsync(conditions);
+}
+
 // attachments
 exports.addAttachment = function(att) {
 

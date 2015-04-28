@@ -23,7 +23,7 @@ router.use('/att/:id', function(req, res, next) {
     })
     .then(function(tip) {
         if(tip == null) res.status(400).end();
-        else { console.log(tip);
+        else {
             var att = tip[0].attachments.filter(function(item) { return item._id == att_id; })[0];
             if(att) {
                 res.download(att.path, att.fileName, function(e) {
@@ -33,7 +33,7 @@ router.use('/att/:id', function(req, res, next) {
             else res.status(400).end();
         }
     })
-    .catch(function(e) {console.log(e);
+    .catch(function(e) {
         res.status(500).end();
     });
 });
@@ -51,6 +51,7 @@ router.post('/:id/attachment', function(req, res) {
 
 // new tip
 router.get('/new', function(req, res) {
+    
     res.render('tips/newtip', {
         type: 'tips'
     });
@@ -122,20 +123,34 @@ router.use('/tip/:id', function(req, res) {
 
 // get all tip
 router.use('/:page?', function(req, res) {
+    var page = req.params.page || 1;
     var vm = {
         type: 'tips',
-        tips: []
+        tips: [],
+        current_page: +page,
+        first_page: 1 == page
     };
 
-    var page = req.params.page || 1;
-    console.log(page);
+    Tip.count()
+        .then(function(c) {
+            vm.count = Math.ceil(c / tips_per_page);
+            if(page > vm.count) {
+                res.render('error', {
+                    status: 404,
+                    message: "Not found"
+                });
+            }
+            else {
+                vm.last_page = (page == vm.count);
 
-    Tip.query({})
-        .then(function(data) {
-            vm.tips = data || [];
-            if(vm.tips.length <= 0) vm.isEmpty = true;
+                Tip.page(page, tips_per_page)
+                    .then(function(data) {
+                        vm.tips = data || [];
+                        if(vm.tips.length <= 0) vm.isEmpty = true;
 
-            res.render('tips/tiplist', vm);
+                        res.render('tips/tiplist', vm);
+                    });
+            }
         })
         .catch(function(e) {
             res.render('error', {

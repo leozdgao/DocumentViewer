@@ -26,7 +26,40 @@
                 <button class="btn btn-xs btn-danger">Remove</button>
             </td>
         </tr>
-        {{/each}}   
+        {{/each}}
     </tbody>
 </table>
+<nav>
+  <ul class="pagination">
+    {{#if first_page}}
+    <li class="disabled">
+        <a aria-label="Previous">
+    {{else}}
+    <li>
+        <a href="/tips/{{#add current_page -1}}{{/add}}" aria-label="Previous">
+    {{/if}}
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {{#repeater count}}
+    {{#ifEqual ../current_page this}}
+    <li class="active">
+    {{else}}
+    <li>
+    {{/ifEqual}}
+        <a href="/tips/{{this}}">{{this}}</a>
+    </li>
+    {{/repeater}}
+    {{#if last_page}}
+    <li class="disabled">
+        <a aria-label="Next">
+    {{else}}
+    <li>
+        <a href="/tips/{{#add current_page 1}}{{/add}}" aria-label="Next">
+    {{/if}}
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 {{/if}}
