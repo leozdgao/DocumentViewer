@@ -4,6 +4,7 @@ var router = express.Router();
 var formidable = require('formidable');
 var config = require('../config.json');
 var att_static_path = config.attpath;
+var tips_per_page = config.tips_per_page;
 
 var Tip = require('../service/tipcontroller');
 
@@ -98,7 +99,7 @@ router.post('/new', function(req, res) {
     });
 });
 
-router.use('/:id', function(req, res) {
+router.use('/tip/:id', function(req, res) {
     var id = req.param('id');
     Tip.get(id)
         .then(function(tip) {
@@ -120,11 +121,14 @@ router.use('/:id', function(req, res) {
 });
 
 // get all tip
-router.use('/', function(req, res) {
+router.use('/:page?', function(req, res) {
     var vm = {
         type: 'tips',
         tips: []
     };
+
+    var page = req.params.page || 1;
+    console.log(page);
 
     Tip.query({})
         .then(function(data) {

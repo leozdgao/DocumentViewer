@@ -38,3 +38,7 @@
 .table {
   margin-top: 10px;
 }
+
+.table tr td:first-child {
+  display: none;
+}

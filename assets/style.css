@@ -201,6 +201,9 @@ ul.breadcrumbs li:before {
   margin-top: 10px;
 }
 
+.table tr td:first-child {
+  display: none;
+}
 .tip-content {
 	margin-top: 20px;
 }

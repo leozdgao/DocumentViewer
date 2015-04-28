@@ -13,7 +13,13 @@
     <tbody>
         {{#each tips}}
         <tr>
-            <td><a href="/tips/{{_id}}">{{title}}</a></td>
+            <td>{{_id}}</td>
+            <td>
+                <a href="/tips/tip/{{_id}}">{{title}}</a>
+                {{#if attachments.length}}
+                <i class="glyphicon glyphicon-paperclip"></i>
+                {{/if}}
+            </td>
             <td>{{#date createDate 'MM-DD-YYYY'}}{{/date}}</td>
             <td>
                 <button class="btn btn-xs btn-success">Edit</button>
