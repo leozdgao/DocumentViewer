@@ -1,0 +1,71 @@
+{{#if isEmpty}}
+<span id="emptymsg">No tips now. You can <a href="/tips/new">add a new one</a>.</span>    
+{{else}}
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-sm-6">Title</th>
+            <th class="col-sm-4">CreateDate</th>
+            <th class="col-sm-2">Action</th>
+        </tr>   
+    </thead>
+    <tbody>
+        {{#each tips}}
+        <tr>
+            <td>{{_id}}</td>
+            <td>
+                {{#ifgt priority 0}}
+                <a class="text-danger" href="/tips/tip/{{_id}}">
+                    <b>[ TopMost ]</b>
+                {{else}}
+                <a href="/tips/tip/{{_id}}">
+                {{/ifgt}}
+                {{title}}
+                </a>
+                {{#if attachments.length}}
+                <i class="glyphicon glyphicon-paperclip"></i>
+                {{/if}}
+            </td>
+            <td>{{#date createDate 'MM-DD-YYYY'}}{{/date}}</td>
+            <td>
+                <button class="btn btn-xs btn-success">Edit</button>
+                <button class="btn btn-xs btn-danger">Remove</button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<nav>
+  <ul class="pagination">
+    {{#if first_page}}
+    <li class="disabled">
+        <a aria-label="Previous">
+    {{else}}
+    <li>
+        <a href="/tips" aria-label="Previous">
+    {{/if}}
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {{#repeater count}}
+    {{#ifEqual ../current_page this}}
+    <li class="active">
+    {{else}}
+    <li>
+    {{/ifEqual}}
+        <a href="/tips/{{this}}">{{this}}</a>
+    </li>
+    {{/repeater}}
+    {{#if last_page}}
+    <li class="disabled">
+        <a aria-label="Next">
+    {{else}}
+    <li>
+        <a href="/tips/{{count}}" aria-label="Next">
+    {{/if}}
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{{/if}}

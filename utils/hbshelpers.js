@@ -31,6 +31,14 @@ module.exports = {
             return options.inverse(this);
         } 
     },
+    ifgt: function(a, b, options) {
+        if(a > b) {
+            return options.fn(this);
+        }
+        else {
+            return options.inverse(this);
+        }
+    },
     add: function(a, b, options) {
         return (a + b) || '';
     }

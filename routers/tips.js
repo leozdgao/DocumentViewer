@@ -72,6 +72,7 @@ router.post('/new', function(req, res) {
             var new_tip = {
                 title: title,
                 content: content,
+                priority: fields.topmost ? 1 : 0,
                 tags: keywords.split(/\s*,\s*/).filter(function(n) { return n; }),
                 attachments: [].map.call(Object.keys(files), function(name) {
 
@@ -86,11 +87,9 @@ router.post('/new', function(req, res) {
 
             Tip.post(new_tip)
                 .then(function() {
-
                     res.status(200).end();
                 })
                 .catch(function(e) {
-
                     res.status(500).json(e);
                 });
         }
@@ -143,12 +142,22 @@ router.use('/:page?', function(req, res) {
             else {
                 vm.last_page = (page == vm.count);
 
-                Tip.page(page, tips_per_page)
+                Tip.getTags()
+                    .then(function(tags) { 
+                        vm.tags = tags[0][0].value.tags;
+                        return Tip.page(page, tips_per_page);
+                    })
                     .then(function(data) {
                         vm.tips = data || [];
                         if(vm.tips.length <= 0) vm.isEmpty = true;
 
                         res.render('tips/tiplist', vm);
+                    })
+                    .catch(function(e) {
+                        res.render('error', {
+                            status: 500,
+                            message: 'Internal error.'
+                        });
                     });
             }
         })
@@ -158,6 +167,10 @@ router.use('/:page?', function(req, res) {
                 message: 'Internal error.'
             });
         });
+});
+
+router.use('/tag/:tag', function(req, res) {
+    
 });
 
 module.exports = router;

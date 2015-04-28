@@ -204,6 +204,14 @@ ul.breadcrumbs li:before {
 .table tr td:first-child {
   display: none;
 }
+
+.tag-panel {
+  font-size: 16px;
+}
+.tag-panel .label {
+  display: inline-block;
+  margin: 4px 2px 0;
+}
 .tip-content {
 	margin-top: 20px;
 }

@@ -5,6 +5,7 @@ var tipSchema = new Schema({
 	title: { type: String },
 	content: { type: String },
 	tags: { type: [String] },
+	priority: { type: Number, default: 0 },
 	createDate: { type: Date, default: new Date() },
 	attachments: {
 		type: [{
