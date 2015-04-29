@@ -2,6 +2,9 @@ h2 { margin-top: 0; }
 textarea {
   resize: none;
 }
+a:hover { text-decoration: none; }
+a:focus { text-decoration: none; }
+
 
 .container {
   /*margin: auto;
@@ -24,4 +27,10 @@ ul.breadcrumbs li:last-child a {
 ul.breadcrumbs li:before {
   content: " /";
   margin-right: 2px;
+}
+
+.clearfix:after {
+  display:table;
+  content: "";
+  clear: both;
 }

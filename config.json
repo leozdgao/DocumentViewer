@@ -1,6 +1,6 @@
 {
     "port": 3000,
-    "docpath": "",
+    "docpath": "\\\\10.10.73.208\\Share\\Public\\documents",
     "imagespath": "",
     "slidespath": "assets/slides",
     "attpath": "D:\\temp",

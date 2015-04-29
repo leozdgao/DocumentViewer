@@ -3,7 +3,12 @@
         {{> tags}}
     </div>
     <div class="col-md-9 col-md-pull-3">
-        <a class="btn btn-default" href="/tips/new">Add Tip</a>
+        <div class="input-group">
+	        <span class="input-group-btn">
+	        	<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+	        </span>
+	        <input type="text" class="form-control" placeholder="Search...">
+	    </div>
         {{> tiplist}}    
     </div>    
 </div>

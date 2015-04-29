@@ -1,10 +1,31 @@
 <a href="/tips">&lt;&lt; Back</a>
 <div class="tip-content">
     <h2>{{tip.title}}</h2>
-    <ul class="tip-atts">
+    <div class="fun-bar">
+        Create Date: {{#date tip.createDate 'MM-DD-YYYY'}}{{/date}}
+        <a href="" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+        <a href="" title="Remove"><i class="glyphicon glyphicon-trash"></i></a>
+    </div>
+    {{#if tip.tags.length}}
+    <div class="tip-taglist">
+        {{#each tip.tags}}
+        <div class="tip-tag">
+            <i class="glyphicon glyphicon-tag"></i>
+            {{this}}
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+    <!-- <span>Attachments:</span> -->
+    {{#if tip.attachments.length}}
+    <ul class="tip-atts clearfix">
         {{#each tip.attachments}}
-        <li class="tip-att"><a href="/tips/att/{{_id}}?tid={{../tip._id}}">{{fileName}}</a></li>
+        <li class="tip-att">
+            <a href="/tips/att/{{_id}}?tid={{../tip._id}}"><i class="glyphicon glyphicon-paperclip"></i> {{fileName}}</a>
+        </li>
         {{/each}}
     </ul>
+    {{/if}}
+    <hr>
     <div>{{tip.content}}</div>
 </div>

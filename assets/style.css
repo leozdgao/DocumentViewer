@@ -2,6 +2,9 @@ h2 { margin-top: 0; }
 textarea {
   resize: none;
 }
+a:hover { text-decoration: none; }
+a:focus { text-decoration: none; }
+
 
 .container {
   /*margin: auto;
@@ -24,6 +27,12 @@ ul.breadcrumbs li:last-child a {
 ul.breadcrumbs li:before {
   content: " /";
   margin-right: 2px;
+}
+
+.clearfix:after {
+  display:table;
+  content: "";
+  clear: both;
 }
 
 /* dropbox style START */
@@ -201,10 +210,6 @@ ul.breadcrumbs li:before {
   margin-top: 10px;
 }
 
-.table tr td:first-child {
-  display: none;
-}
-
 .tag-panel {
   font-size: 16px;
   margin-bottom: 20px;
@@ -212,7 +217,44 @@ ul.breadcrumbs li:before {
 .tag-panel .label {
   display: inline-block;
   margin: 4px 2px 0;
+  font-weight: 400;
+  background-color: #999;
 }
 .tip-content {
-	margin-top: 20px;
+    margin-top: 20px;
+}
+
+.tip-taglist {
+    margin: 10px 0;
+}
+
+.tip-tag {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.tip-atts {
+    padding-left: 0;
+}
+
+.tip-att {
+    float: left;
+    list-style: none;
+    margin: 0 5px;
+}
+.tip-att a {
+    display: inline-block;
+    background: #eee;
+    color: #666;
+    padding: 5px;
+    border-radius: 5px;
+}
+.tip-att:hover a {
+    background: #ddd;
+    cursor: pointer;
+}
+
+.fun-bar a {
+    display: inline-block;
+    margin: 0 2px;
 }

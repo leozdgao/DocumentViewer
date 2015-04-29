@@ -4,15 +4,13 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-sm-6">Title</th>
-            <th class="col-sm-4">CreateDate</th>
-            <th class="col-sm-2">Action</th>
+            <th class="col-sm-9">Title &nbsp;<a href="/tips/new" title="Create a tip"><i class="glyphicon glyphicon-plus"></i></a></th>
+            <th class="col-sm-3">CreateDate</th>
         </tr>   
     </thead>
     <tbody>
         {{#each tips}}
         <tr>
-            <td>{{_id}}</td>
             <td>
                 {{#ifgt priority 0}}
                 <a class="text-danger" href="/tips/tip/{{_id}}">
@@ -27,10 +25,6 @@
                 {{/if}}
             </td>
             <td>{{#date createDate 'MM-DD-YYYY'}}{{/date}}</td>
-            <td>
-                <button class="btn btn-xs btn-success">Edit</button>
-                <button class="btn btn-xs btn-danger">Remove</button>
-            </td>
         </tr>
         {{/each}}
     </tbody>

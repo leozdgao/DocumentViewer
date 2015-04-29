@@ -1,3 +1,38 @@
 .tip-content {
-	margin-top: 20px;
+    margin-top: 20px;
+}
+
+.tip-taglist {
+    margin: 10px 0;
+}
+
+.tip-tag {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.tip-atts {
+    padding-left: 0;
+}
+
+.tip-att {
+    float: left;
+    list-style: none;
+    margin: 0 5px;
+}
+.tip-att a {
+    display: inline-block;
+    background: #eee;
+    color: #666;
+    padding: 5px;
+    border-radius: 5px;
+}
+.tip-att:hover a {
+    background: #ddd;
+    cursor: pointer;
+}
+
+.fun-bar a {
+    display: inline-block;
+    margin: 0 2px;
 }
