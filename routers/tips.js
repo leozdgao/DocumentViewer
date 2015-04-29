@@ -152,7 +152,7 @@ router.use('/:page?', function(req, res) {
                         vm.tips = data || [];
                         if(vm.tips.length <= 0) vm.isEmpty = true;
 
-                        res.render('tips/tiplist', vm);
+                        res.render('tips/tips', vm);
                     })
                     .catch(function(e) {
                         res.render('error', {

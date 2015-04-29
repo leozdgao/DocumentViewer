@@ -1,9 +1,9 @@
 module.exports = {
 	js: [
-		'app/**/*.js'
+		'app/js/**/*.js'
 	],
 	css: [
-		'app/**/*.css'
+		'app/css/**/*.css'
 	],
 	monignore: [
 		'assets/*',

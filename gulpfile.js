@@ -13,6 +13,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var livereload = require('gulp-livereload');
 var nodemon = require('gulp-nodemon');
 var jshint = require('gulp-jshint');
+var webpack = require('gulp-webpack');
 var del = require('del');
 
 // release
@@ -43,7 +44,8 @@ gulp.task('release:js', function() { // add jslint and uTest later maybe
 
 	//js
     return gulp.src(files.js)
-            .pipe(concat(files.destJs))
+            // .pipe(concat(files.destJs))
+            .pipe(webpack(require('./webpack.config.js')))
             .pipe(gulp.dest(files.release)) 
 			//js hint before uglify
 			// .pipe(jshint())
@@ -86,7 +88,8 @@ gulp.task('concat:css', function() {
 gulp.task('concat:js', function() {
 
 	return gulp.src(files.js)
-			.pipe(concat(files.destJs))
+			// .pipe(concat(files.destJs))
+			.pipe(webpack(require('./webpack.config.js')))
 			.pipe(gulp.dest(files.release))
 			.pipe(livereload());
 });

@@ -22,7 +22,6 @@ app.locals.isdev = ( config.env.toLowerCase() === 'dev' );
 // view engine setup
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
-app.set('views', 'app');
 
 // promisify mongoose
 var Promise = require("bluebird");

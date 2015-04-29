@@ -1,5 +1,6 @@
-document.addEventListener('DOMContentLoaded', function(e) {
+var $ = require('./common.js');
 
+$.load(function(e) {
     var form = document.getElementById('tipform');
     var btnSubmit = form.querySelector('button');
     var uploader = document.getElementById('uploader');
