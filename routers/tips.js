@@ -27,7 +27,7 @@ router.use('/att/:id', function(req, res, next) {
             var att = tip[0].attachments.filter(function(item) { return item._id == att_id; })[0];
             if(att) {
                 res.download(att.path, att.fileName, function(e) {
-                    console.log(e);
+                    // console.log(e);
                 });
             }
             else res.status(400).end();
@@ -134,32 +134,37 @@ router.use('/:page?', function(req, res) {
     Tip.count()
         .then(function(c) {
             vm.count = Math.ceil(c / tips_per_page);
-            if(page > vm.count) {
-                res.render('error', {
-                    status: 404,
-                    message: "Not found"
-                });
+            if(c > 0) {
+                if(page > vm.count) {
+                    res.render('error', {
+                        status: 404,
+                        message: "Not found"
+                    });
+                }
+                else {
+                    vm.last_page = (page == vm.count);
+
+                    Tip.getTags()
+                        .then(function(tags) {
+                            vm.tags = tags[0][0].value.tags;
+                            return Tip.page(page, tips_per_page);
+                        })
+                        .then(function(data) {
+                            vm.tips = data || [];
+                            if(vm.tips.length <= 0) vm.isEmpty = true;
+
+                            res.render('tips/tips', vm);
+                        })
+                        .catch(function(e) {
+                            res.render('error', {
+                                status: 500,
+                                message: 'Internal error.'
+                            });
+                        });
+                }
             }
             else {
-                vm.last_page = (page == vm.count);
-
-                Tip.getTags()
-                    .then(function(tags) { 
-                        vm.tags = tags[0][0].value.tags;
-                        return Tip.page(page, tips_per_page);
-                    })
-                    .then(function(data) {
-                        vm.tips = data || [];
-                        if(vm.tips.length <= 0) vm.isEmpty = true;
-
-                        res.render('tips/tips', vm);
-                    })
-                    .catch(function(e) {
-                        res.render('error', {
-                            status: 500,
-                            message: 'Internal error.'
-                        });
-                    });
+                res.render('tips/tips', vm);
             }
         })
         .catch(function(e) {

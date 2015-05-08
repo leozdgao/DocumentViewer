@@ -29,6 +29,8 @@
         {{/each}}
     </tbody>
 </table>
+<!-- if pages count greater then 1, show pagination -->
+{{#if count-1}} 
 <nav>
   <ul class="pagination">
     {{#if first_page}}
@@ -62,4 +64,5 @@
     </li>
   </ul>
 </nav>
+{{/if}}
 {{/if}}
