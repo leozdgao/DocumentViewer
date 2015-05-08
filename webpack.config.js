@@ -1,6 +1,6 @@
 module.exports = {
 	entry: {
-		ctip: './app/tips/main.js'
+		ctip: './app/js/main.js'
 	},
 	output: {
 		path: './assets',

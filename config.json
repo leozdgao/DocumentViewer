@@ -6,5 +6,5 @@
     "attpath": "D:\\temp",
     "dbConnection": "mongodb://10.10.73.209:27017/Doc",
     "tips_per_page": 15,
-    "env": "dev"
+    "env": "release"
 }
