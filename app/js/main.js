@@ -1,14 +1,16 @@
-var $ = require('./common.js');
+var ckeditor = require('ckeditor');
 var tipForm = require('./tipform');
+var $ = require('./common.js');
 
 $.load(function(e) {
-
+    // init ckeditor
     var form = tipForm('POST', '/tips/new');
-    form.validate = {
-
-    };
+    form.setValidate('title', /^\s*$/);
+    form.setValidate('editor', function (editor) {
+        return !/^\s*$/.test(editor.getData());
+    });
     form.beforeSubmit = function() {
-        
+
     };
     
     // var backdrop = document.querySelector('.backdrop');

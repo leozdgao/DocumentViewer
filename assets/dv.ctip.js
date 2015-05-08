@@ -44,17 +44,19 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $ = __webpack_require__(1);
+	var ckeditor = __webpack_require__(1);
 	var tipForm = __webpack_require__(2);
+	var $ = __webpack_require__(3);
 
 	$.load(function(e) {
-
+	    // init ckeditor
 	    var form = tipForm('POST', '/tips/new');
-	    form.validate = {
-
-	    };
+	    form.setValidate('title', /^\s*$/);
+	    form.setValidate('editor', function (editor) {
+	        return !/^\s*$/.test(editor.getData());
+	    });
 	    form.beforeSubmit = function() {
-	        
+
 	    };
 	    
 	    // var backdrop = document.querySelector('.backdrop');
@@ -126,26 +128,24 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {
-	    load: function(fn) {
-	        document.addEventListener('DOMContentLoaded', fn);
-	    },
-	    ajax: function() {
-	        
-	    }
-	};
-
+	module.exports = CKEDITOR;
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// dom elements
 	var form = document.getElementById('tipform');
 	var btnSubmit = form.querySelector('button');
 	var attlist = document.querySelector('.attlist');
 	var new_tip_errmsg = document.getElementById('new_tip_errmsg');
+	var backdrop = document.querySelector('.backdrop');
 
-	var dropBox = __webpack_require__(3);
+	// require modules
+	var dropBox = __webpack_require__(4);
+	var editor = __webpack_require__(5)('content');
+	var ValidateError = __webpack_require__(6);
+
 	dropBox.onAppendFile = function (fileList) {
 	    [].forEach.call(fileList, function(file, i) {
 	        var att = document.createElement('div');
@@ -167,37 +167,88 @@
 
 	module.exports = function(method, url) {
 
-	    var validate = {};
-	    var form = {
+	    var validate = {}, s_control = { 'editor': editor };
+
+	    btnSubmit.addEventListener('click', function(e) {
+
+	        e.preventDefault();
+
+	        // validate field
+	        for(var key in validate) if(validate.hasOwnProperty(key)) {
+	            var control = document.getElementsByName(key)[0] || document.getElementById(key) || s_control[key];
+	            if(control && !validate[key].call(null, control)) {
+	                throw new ValidateError(key, 'Validate error: [' + key + ']');
+	            }
+	        }
+
+	        backdrop.style.display = 'block';
+
+	        // prepare formdata
+	        var formData = new FormData(form);
+	        formData.append('content', editor.getData());
+	        [].forEach.call(dropBox.files, function(file, i) {
+	            formData.append("file" + i, file);
+	        });
+
+	        // submit
+	        var xhr = new XMLHttpRequest();
+	        xhr.open('POST', '/tips/new');
+	        xhr.onload = function() {
+	            setTimeout(function() {
+	                window.location.pathname = "/tips";
+	            }, 2000);
+	        };
+	        xhr.onerror = function() {
+
+	            backdrop.style.display = 'none';
+
+	            try {
+	                var error = JSON.parse(xhr.response);
+	                new_tip_errmsg.textContent = error.message;
+	            }
+	            catch(e) { new_tip_errmsg.textContent = "Unkown error."; }
+	        };
+	        xhr.timeout = 5000; // 5s timeout
+	        xhr.send(formData);
+	    });
+
+	    return {
 	        onSubmit: null,
 	        beforeSubmit: function() { return true; },
 	        onSuccess: null,
 	        onError: null,
-	        setValidate: function(field, regex) {
-
+	        setValidate: function(field, validateFn) {
 	            // is regex
-	            if(regex.constructor.name === 'RegExp') {
-	                validate[field] = regex;
+	            if(validateFn.constructor.name === 'RegExp') {
+	                var reg = validateFn;
+	                validateFn = function (control) { return !reg.test(control.value); }
 	            }
+
+	            validate[field] = validateFn;
 	        },
 	        setErrorMessage: function(msg) {
 	            new_tip_errmsg.textContent = msg;
 	        }
 	    };
-
-	    btnSubmit.addEventListener('click', function(e) {
-
-	        e.preventDefault();
-	        
-	        console.log('obj');
-	    });
-
-	    return form;
 	};
 
 
 /***/ },
 /* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = {
+	    load: function(fn) {
+	        document.addEventListener('DOMContentLoaded', fn);
+	    },
+	    ajax: function() {
+	        
+	    }
+	};
+
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var dropBox = module.exports =  {
@@ -248,6 +299,30 @@
 	    dropBox.onAppendFile && dropBox.onAppendFile.call(null, uploader.files);
 	});
 
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ckeditor = __webpack_require__(1);
+
+	module.exports = function (id) {
+		ckeditor.replace(id);
+		return ckeditor.instances[id];
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ValidateError = function (field, message) {
+		this.field = field;
+		this.message = message;
+	}
+
+	ValidateError.prototype = Error.prototype;
+
+	module.exports = ValidateError;
 
 /***/ }
 /******/ ]);
