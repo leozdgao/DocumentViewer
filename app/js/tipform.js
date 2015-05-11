@@ -15,7 +15,7 @@ dropBox.onAppendFile = function (fileList) {
         var att = document.createElement('div');
         att.className = 'att';
         var content = document.createElement('span');
-        content.className = 'content'
+        content.className = 'content';
         content.textContent = file.name;
         att.appendChild(content);
         var close = document.createElement('span');
@@ -77,9 +77,7 @@ module.exports = function(method, url) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/tips/new');
         xhr.onload = function() {
-
             tipForm.onSuccess.call();
-            
         };
         xhr.onerror = function() {
 

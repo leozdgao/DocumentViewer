@@ -16,7 +16,7 @@ exports.post = function(tip) {
 };
 
 exports.update = function(id, tip, options) {
-    return Tip.findOneAndUpdateAsync({ _id: id }, update, options);
+    return Tip.findOneAndUpdateAsync({ _id: id }, tip, options);
 };
 
 exports.remove = function(id) {
@@ -29,7 +29,7 @@ exports.page = function(page, limit) {
 
 exports.count = function(conditions) {
     return Tip.countAsync(conditions);
-}
+};
 
 exports.getTags = function() {
     var o = {

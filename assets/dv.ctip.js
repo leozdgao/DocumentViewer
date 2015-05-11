@@ -64,69 +64,6 @@
 	            window.location.pathname = "/tips";
 	        }, 1000);
 	    };
-	    
-	    // var backdrop = document.querySelector('.backdrop');
-	    
-
-	    // btnSubmit.addEventListener('click', function(e) {
-
-	    //     e.preventDefault();
-
-	    //     // form validate
-	    //     var tbTitle = document.getElementById('title');
-	    //     var tbContent = document.getElementById('content');
-	    //     if(!checkRequire([tbTitle, tbContent])) {
-
-	    //         new_tip_errmsg.textContent = "Required fields should be populated.";
-	    //         return;
-	    //     } 
-
-	    //     new_tip_errmsg.textContent = "";
-
-	    //     // show backdrop
-	    //     backdrop.style.display = 'block';
-
-	    //     var formData = new FormData(form);
-	    //     [].forEach.call(files, function(file, i) {
-	    //         formData.append("file" + i, file);
-	    //     });
-
-	    //     var xhr = new XMLHttpRequest();
-	    //     xhr.open('POST', '/tips/new');
-	    //     xhr.onload = function() {
-	    //         setTimeout(function() {
-	    //             window.location.pathname = "/tips";
-	    //         }, 2000);
-	    //     };
-	    //     xhr.onerror = function() {
-
-	    //         backdrop.style.display = 'none';
-
-	    //         try {
-	    //             var error = JSON.parse(xhr.response);
-	    //             new_tip_errmsg.textContent = error.message;
-	    //         }
-	    //         catch(e) { new_tip_errmsg.textContent = "Unkown error."; }
-	    //     };
-	    //     xhr.timeout = 5000; // 5s timeout
-	    //     xhr.send(formData);
-	    // });
-
-	    // form.addEventListener('keyup', function(e) {
-	    //     var target = e.srcElement || e.target;
-	    //     if(target.value) target.parentElement.classList.remove('has-error');
-	    // });
-
-	    // function checkRequire(controls) {
-	    //     var valid = true;
-	    //     [].forEach.call(controls, function(control) {
-	    //         if(/^\s*$/.test(control.value)) {
-	    //             control.parentElement.classList.add('has-error');
-	    //             valid = false;
-	    //         }
-	    //     });
-	    //     return valid;
-	    // }
 	});
 
 
@@ -148,8 +85,8 @@
 	var backdrop = document.querySelector('.backdrop');
 
 	// require modules
-	var dropBox = __webpack_require__(4);
-	var editor = __webpack_require__(5)('content');
+	var dropBox = __webpack_require__(5);
+	var editor = __webpack_require__(4)('content');
 	var ValidateError = __webpack_require__(6);
 
 	dropBox.onAppendFile = function (fileList) {
@@ -157,7 +94,7 @@
 	        var att = document.createElement('div');
 	        att.className = 'att';
 	        var content = document.createElement('span');
-	        content.className = 'content'
+	        content.className = 'content';
 	        content.textContent = file.name;
 	        att.appendChild(content);
 	        var close = document.createElement('span');
@@ -219,9 +156,7 @@
 	        var xhr = new XMLHttpRequest();
 	        xhr.open('POST', '/tips/new');
 	        xhr.onload = function() {
-
 	            tipForm.onSuccess.call();
-	            
 	        };
 	        xhr.onerror = function() {
 
@@ -257,6 +192,17 @@
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ckeditor = __webpack_require__(1);
+
+	module.exports = function (id) {
+		ckeditor.replace(id);
+		return ckeditor.instances[id];
+	}
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// export
@@ -308,17 +254,6 @@
 	    dropBox.onAppendFile && dropBox.onAppendFile.call(null, uploader.files);
 	});
 
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ckeditor = __webpack_require__(1);
-
-	module.exports = function (id) {
-		ckeditor.replace(id);
-		return ckeditor.instances[id];
-	}
 
 /***/ },
 /* 6 */

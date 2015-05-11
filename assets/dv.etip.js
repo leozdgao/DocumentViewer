@@ -45,17 +45,18 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $ = __webpack_require__(3);
+	var editor = __webpack_require__(4)('content');
 
-	$.load(function () {
-		var btn_remove = document.getElementById('btn_remove');
-		btn_remove.addEventListener('click', function (e) {
-			if(!confirm('Remove this tag?')) e.preventDefault();
-		});
-	});
+
 
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = CKEDITOR;
+
+/***/ },
 /* 2 */,
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
@@ -69,6 +70,17 @@
 	    }
 	};
 
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ckeditor = __webpack_require__(1);
+
+	module.exports = function (id) {
+		ckeditor.replace(id);
+		return ckeditor.instances[id];
+	}
 
 /***/ }
 /******/ ]);

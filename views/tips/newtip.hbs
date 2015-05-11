@@ -1,4 +1,4 @@
-<h2><i class="glyphicon glyphicon-list-alt"></i> Create</h2>
+<h2><i class="glyphicon glyphicon-list-alt"></i> {{title}}</h2>
 <form id="tipform">
     <fieldset>
         <div class="checkbox">
@@ -48,9 +48,8 @@
 <script src="/ckeditor/ckeditor.js"></script>
 
 {{#if isdev}}
-<!-- <script src="/script.js"></script> -->
 <script src="/dv.ctip.js"></script>
 {{else}}
-<script src="/script.min.js"></script>
+<script src="/dv.ctip.min.js"></script>
 {{/if}}
 

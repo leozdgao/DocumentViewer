@@ -53,7 +53,8 @@ router.post('/:id/attachment', function(req, res) {
 router.get('/new', function(req, res) {
     
     res.render('tips/newtip', {
-        type: 'tips'
+        type: 'tips',
+        title: 'Create'
     });
 });
 
@@ -68,12 +69,20 @@ router.post('/new', function(req, res) {
         var content = fields.content;
 
         if(!/^\s*$/.test(title) && !/^\s*$/.test(content)) {
+            
+            var tags = keywords.split(/\s*,\s*/).filter(function(n) { return n; }).sort();
+            var cursor = tags.length - 1;
+            var last = tags[tags.length - 1];
+            while(cursor--) {
+                if(last === tags[cursor]) tags.splice(cursor, 1);
+                else last = tags[cursor];
+            }
 
             var new_tip = {
                 title: title,
                 content: content,
                 priority: fields.topmost ? 1 : 0,
-                tags: keywords.split(/\s*,\s*/).filter(function(n) { return n; }),
+                tags: tags,
                 attachments: [].map.call(Object.keys(files), function(name) {
 
                     var file = files[name];
@@ -99,6 +108,66 @@ router.post('/new', function(req, res) {
     });
 });
 
+router.get('/tip/:id/edit', function (req, res, next) {
+    var id = req.params.id;
+    Tip.get(id)
+        .then(function (tip) {
+            if(tip) {
+                
+                tip.keywords = tip.tags.join(', ');
+                tip.topmost = tip.priority > 0;
+                
+                res.render('tips/edittip', {
+                    type: 'tips',
+                    title: 'Edit',
+                    tip: tip
+                });    
+            }
+            else next({
+                status: 404,
+                message: "Can't find the tip.",
+                type: "tips"
+            });
+        })
+        .catch(function (e) {
+            next({
+                status: 500,
+                message: e.message,
+                type: "tips"
+            });
+        });
+});
+
+router.post('/tip/:id/edit', require('body-parser').urlencoded({extended: true}), function (req, res, next) {
+    var id = req.params.id;
+    var tags = req.body.keywords.split(/\s*,\s*/).filter(function(n) { return n; }).sort();
+    var cursor = tags.length - 1;
+    var last = tags[tags.length - 1];
+    while(cursor--) {
+        if(last === tags[cursor]) tags.splice(cursor, 1);
+        else last = tags[cursor];
+    }
+    
+    var update = {
+        content: req.body.content,
+        title: req.body.title,
+        tags:  tags,
+        priority: req.body.topmost ? 1 : 0
+    };
+    
+    Tip.update(id, update)
+        .then(function (e) {
+            res.redirect('/tips/tip/' + id);
+        })
+        .catch(function (e) { 
+            next({
+                status: 500,
+                message: e.message,
+                type: "tips"
+            });
+        });
+});
+
 router.use('/tip/:id', function(req, res, next) {
     var id = req.params.id;
     Tip.get(id)
@@ -118,34 +187,8 @@ router.use('/tip/:id', function(req, res, next) {
                 message: "Can't find the tip.",
                 type: "tips"
             });
-            
         })
         .catch(function(e) {
-            next({
-                status: 500,
-                message: e.message,
-                type: "tips"
-            });
-        });
-});
-
-router.use('/tip/:id/edit', function (req, res, next) {
-    var id = req.params.id;
-    Tip.get(id)
-        .then(function (tip) {
-            if(tip) {
-                res.render('tips/newtip', {
-                    type: 'tips',
-                    tip: tip
-                });    
-            }
-            else next({
-                status: 404,
-                message: "Can't find the tip.",
-                type: "tips"
-            });
-        })
-        .catch(function (e) {
             next({
                 status: 500,
                 message: e.message,

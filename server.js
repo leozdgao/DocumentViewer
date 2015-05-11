@@ -39,7 +39,7 @@ app.use('/tips', require('./routers/tips'));
 app.use(function (req, res) { res.redirect("/docs"); });
 
 // handle error 
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) { console.log(err);
     res.render('error', err);
 });
 

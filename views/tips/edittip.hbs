@@ -1,0 +1,36 @@
+<h2><i class="glyphicon glyphicon-list-alt"></i> {{title}}</h2>
+<form id="tipform" method="post" action="/tips/tip/{{tip._id}}/edit">
+    <fieldset>
+        <div class="checkbox">
+          <label><input name="topmost" type="checkbox" {{#if tip.topmost}}checked{{/if}}> TopMost</label>
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input class="form-control" id="title" name="title" value="{{tip.title}}">
+        </div>
+        <div class="form-group">
+            <label for="keywords">Key Words (Split by ',')</label>
+            <input class="form-control" id="keywords" name="keywords" value="{{tip.keywords}}">
+        </div>
+        <div class="content-group">
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" name="content"  rows="10">
+                    {{tip.content}}
+                </textarea>
+            </div>
+        </div>
+        <button class="btn btn-primary">Submit</button>
+        <a class="btn btn-default" href="/tips/tip/{{tip._id}}">Cancel</a>
+        <span id="new_tip_errmsg"></span>
+    </fieldset>
+</form>
+
+<!-- CKEditor -->
+<script src="/ckeditor/ckeditor.js"></script>
+
+{{#if isdev}}
+<script src="/dv.etip.js"></script>
+{{else}}
+<script src="/dv.etip.min.js"></script>
+{{/if}}
