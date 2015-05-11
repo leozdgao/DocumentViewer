@@ -81,7 +81,7 @@ router.post('/new', function(req, res) {
                         fileName: file.name,
                         contentType: file.type,
                         path: file.path
-                    }
+                    };
                 })
             };
 
@@ -99,23 +99,56 @@ router.post('/new', function(req, res) {
     });
 });
 
-router.use('/tip/:id', function(req, res) {
-    var id = req.param('id');
+router.use('/tip/:id', function(req, res, next) {
+    var id = req.params.id;
     Tip.get(id)
         .then(function(tip) {
-            tip.attachments = tip.attachments.map(function(att) {
-                att.basename = path.basename(att.path);
-                return att;
+            if(tip) {
+                tip.attachments = tip.attachments.map(function(att) {
+                    att.basename = path.basename(att.path);
+                    return att;
+                });
+                res.render('tips/tipview', {
+                    tip: tip,
+                    type: "tips"
+                });
+            }
+            else next({
+                status: 404,
+                message: "Can't find the tip.",
+                type: "tips"
             });
-            res.render('tips/tipview', {
-                tip: tip,
+            
+        })
+        .catch(function(e) {
+            next({
+                status: 500,
+                message: e.message,
+                type: "tips"
+            });
+        });
+});
+
+router.use('/tip/:id/edit', function (req, res, next) {
+    var id = req.params.id;
+    Tip.get(id)
+        .then(function (tip) {
+            if(tip) {
+                res.render('tips/newtip', {
+                    type: 'tips',
+                    tip: tip
+                });    
+            }
+            else next({
+                status: 404,
+                message: "Can't find the tip.",
                 type: "tips"
             });
         })
-        .catch(function(e) {
-            res.render('error', {
-                status: 404,
-                message: "Can't find the tip.",
+        .catch(function (e) {
+            next({
+                status: 500,
+                message: e.message,
                 type: "tips"
             });
         });
@@ -126,7 +159,7 @@ router.use('/search', function (req, res) {
 });
 
 // remove the tag
-router.use('/rtag/:tagId', function (req, res) {
+router.use('/rtag/:tagId', function (req, res, next) {
     var id = req.params.tagId;
 
     Tip.remove(id)
@@ -136,15 +169,16 @@ router.use('/rtag/:tagId', function (req, res) {
         })
         .catch(function (e) {
 
-            res.render('error', {
+            next({
                 status: 500,
-                message: 'Internal error.'
+                message: 'Internal error.',
+                type: 'tips'
             });
         });
 });
 
 // get all tip
-router.use('/:page?', function(req, res) {
+router.use('/:page?', function(req, res, next) {
     var page = req.params.page || 1;
     var vm = {
         type: 'tips',
@@ -158,9 +192,10 @@ router.use('/:page?', function(req, res) {
             vm.count = Math.ceil(c / tips_per_page);
             if(c > 0) {
                 if(page > vm.count) {
-                    res.render('error', {
+                    next({
                         status: 404,
-                        message: "Not found"
+                        message: "Not found",
+                        type: 'tips'
                     });
                 }
                 else {
@@ -178,9 +213,10 @@ router.use('/:page?', function(req, res) {
                             res.render('tips/tips', vm);
                         })
                         .catch(function(e) {
-                            res.render('error', {
+                            next({
                                 status: 500,
-                                message: 'Internal error.'
+                                message: e.message,
+                                type: 'tips'
                             });
                         });
                 }
@@ -190,9 +226,10 @@ router.use('/:page?', function(req, res) {
             }
         })
         .catch(function(e) {
-            res.render('error', {
+            next({
                 status: 500,
-                message: 'Internal error.'
+                message: 'Internal error.',
+                type: 'tips'
             });
         });
 });

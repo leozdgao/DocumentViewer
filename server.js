@@ -38,6 +38,11 @@ app.use('/tips', require('./routers/tips'));
 // other request
 app.use(function (req, res) { res.redirect("/docs"); });
 
+// handle error 
+app.use(function (err, req, res, next) {
+    res.render('error', err);
+});
+
 var port = process.env.PORT || config.port || 3000;
 var connected = false;
 

@@ -5,4 +5,4 @@ $.load(function () {
 	btn_remove.addEventListener('click', function (e) {
 		if(!confirm('Remove this tag?')) e.preventDefault();
 	});
-})
+});
