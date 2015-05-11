@@ -4,7 +4,7 @@
     <div class="fun-bar">
         Create Date: {{#date tip.createDate 'MM-DD-YYYY'}}{{/date}}
         <a href="" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-        <a href="" title="Remove"><i class="glyphicon glyphicon-trash"></i></a>
+        <a id="btn_remove" href="/tips/rtag/{{tip._id}}" title="Remove"><i class="glyphicon glyphicon-trash"></i></a>
     </div>
     {{#if tip.tags.length}}
     <div class="tip-taglist">
@@ -29,3 +29,5 @@
     <hr>
     <div>{{{tip.content}}}</div>
 </div>
+
+<script src="/dv.vtip.js"></script>

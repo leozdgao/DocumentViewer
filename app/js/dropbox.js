@@ -1,3 +1,4 @@
+// export
 var dropBox = module.exports =  {
     files: [],
     onAppendFile: null

@@ -53,10 +53,16 @@
 	    var form = tipForm('POST', '/tips/new');
 	    form.setValidate('title', /^\s*$/);
 	    form.setValidate('editor', function (editor) {
-	        return !/^\s*$/.test(editor.getData());
-	    });
-	    form.beforeSubmit = function() {
+	        // create a div for test data in editor is empty or whitespace
+	        var div = document.createElement('div');
+	        div.innerHTML = editor.getData();
 
+	        return !/^\s*$/.test(div.textContent);
+	    });
+	    form.onSuccess = function() {
+	        setTimeout(function() {
+	            window.location.pathname = "/tips";
+	        }, 1000);
 	    };
 	    
 	    // var backdrop = document.querySelector('.backdrop');
@@ -169,6 +175,25 @@
 
 	    var validate = {}, s_control = { 'editor': editor };
 
+	    var tipForm = {
+	        onSubmit: null,
+	        beforeSubmit: function() { return true; },
+	        onSuccess: null,
+	        onError: null,
+	        setValidate: function(field, validateFn) {
+	            // is regex
+	            if(validateFn.constructor.name === 'RegExp') {
+	                var reg = validateFn;
+	                validateFn = function (control) { return !reg.test(control.value); }
+	            }
+
+	            validate[field] = validateFn;
+	        },
+	        setErrorMessage: function(msg) {
+	            new_tip_errmsg.textContent = msg;
+	        }
+	    };
+
 	    btnSubmit.addEventListener('click', function(e) {
 
 	        e.preventDefault();
@@ -194,9 +219,9 @@
 	        var xhr = new XMLHttpRequest();
 	        xhr.open('POST', '/tips/new');
 	        xhr.onload = function() {
-	            setTimeout(function() {
-	                window.location.pathname = "/tips";
-	            }, 2000);
+
+	            tipForm.onSuccess.call();
+	            
 	        };
 	        xhr.onerror = function() {
 
@@ -212,24 +237,7 @@
 	        xhr.send(formData);
 	    });
 
-	    return {
-	        onSubmit: null,
-	        beforeSubmit: function() { return true; },
-	        onSuccess: null,
-	        onError: null,
-	        setValidate: function(field, validateFn) {
-	            // is regex
-	            if(validateFn.constructor.name === 'RegExp') {
-	                var reg = validateFn;
-	                validateFn = function (control) { return !reg.test(control.value); }
-	            }
-
-	            validate[field] = validateFn;
-	        },
-	        setErrorMessage: function(msg) {
-	            new_tip_errmsg.textContent = msg;
-	        }
-	    };
+	    return tipForm;
 	};
 
 
@@ -251,6 +259,7 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// export
 	var dropBox = module.exports =  {
 	    files: [],
 	    onAppendFile: null

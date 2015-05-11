@@ -7,10 +7,16 @@ $.load(function(e) {
     var form = tipForm('POST', '/tips/new');
     form.setValidate('title', /^\s*$/);
     form.setValidate('editor', function (editor) {
-        return !/^\s*$/.test(editor.getData());
-    });
-    form.beforeSubmit = function() {
+        // create a div for test data in editor is empty or whitespace
+        var div = document.createElement('div');
+        div.innerHTML = editor.getData();
 
+        return !/^\s*$/.test(div.textContent);
+    });
+    form.onSuccess = function() {
+        setTimeout(function() {
+            window.location.pathname = "/tips";
+        }, 1000);
     };
     
     // var backdrop = document.querySelector('.backdrop');

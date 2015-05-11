@@ -110,13 +110,35 @@ router.use('/tip/:id', function(req, res) {
             res.render('tips/tipview', {
                 tip: tip,
                 type: "tips"
-            })
+            });
         })
         .catch(function(e) {
             res.render('error', {
                 status: 404,
                 message: "Can't find the tip.",
                 type: "tips"
+            });
+        });
+});
+
+router.use('/search', function (req, res) {
+
+});
+
+// remove the tag
+router.use('/rtag/:tagId', function (req, res) {
+    var id = req.params.tagId;
+
+    Tip.remove(id)
+        .then(function (result) {
+
+            res.redirect('/tips');
+        })
+        .catch(function (e) {
+
+            res.render('error', {
+                status: 500,
+                message: 'Internal error.'
             });
         });
 });
@@ -173,10 +195,6 @@ router.use('/:page?', function(req, res) {
                 message: 'Internal error.'
             });
         });
-});
-
-router.use('/tag/:tag', function(req, res) {
-
 });
 
 module.exports = router;

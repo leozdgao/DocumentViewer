@@ -33,6 +33,25 @@ module.exports = function(method, url) {
 
     var validate = {}, s_control = { 'editor': editor };
 
+    var tipForm = {
+        onSubmit: null,
+        beforeSubmit: function() { return true; },
+        onSuccess: null,
+        onError: null,
+        setValidate: function(field, validateFn) {
+            // is regex
+            if(validateFn.constructor.name === 'RegExp') {
+                var reg = validateFn;
+                validateFn = function (control) { return !reg.test(control.value); }
+            }
+
+            validate[field] = validateFn;
+        },
+        setErrorMessage: function(msg) {
+            new_tip_errmsg.textContent = msg;
+        }
+    };
+
     btnSubmit.addEventListener('click', function(e) {
 
         e.preventDefault();
@@ -58,9 +77,9 @@ module.exports = function(method, url) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/tips/new');
         xhr.onload = function() {
-            setTimeout(function() {
-                window.location.pathname = "/tips";
-            }, 2000);
+
+            tipForm.onSuccess.call();
+            
         };
         xhr.onerror = function() {
 
@@ -76,22 +95,5 @@ module.exports = function(method, url) {
         xhr.send(formData);
     });
 
-    return {
-        onSubmit: null,
-        beforeSubmit: function() { return true; },
-        onSuccess: null,
-        onError: null,
-        setValidate: function(field, validateFn) {
-            // is regex
-            if(validateFn.constructor.name === 'RegExp') {
-                var reg = validateFn;
-                validateFn = function (control) { return !reg.test(control.value); }
-            }
-
-            validate[field] = validateFn;
-        },
-        setErrorMessage: function(msg) {
-            new_tip_errmsg.textContent = msg;
-        }
-    };
+    return tipForm;
 };
