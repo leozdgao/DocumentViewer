@@ -35,6 +35,10 @@ ul.breadcrumbs li:before {
   clear: both;
 }
 
+.hidden {
+  display: none;
+}
+
 /* dropbox style START */
 .dropbox { margin-bottom: 10px; }
 .inner-box {
@@ -156,6 +160,10 @@ ul.breadcrumbs li:before {
             animation: spin 1s infinite;
 }
 
+#tipform {
+    margin-bottom: 10px;
+}
+
 @-webkit-keyframes spin {
     from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
     to { -webkit-transform: rotate(359deg); transform: rotate(359deg); }
@@ -239,6 +247,7 @@ ul.breadcrumbs li:before {
 }
 
 .tip-att {
+    position: relative;
     float: left;
     list-style: none;
     margin: 0 5px;
@@ -247,12 +256,20 @@ ul.breadcrumbs li:before {
     display: inline-block;
     background: #eee;
     color: #666;
-    padding: 5px;
+    padding: 5px 25px 5px 5px;
     border-radius: 5px;
 }
 .tip-att:hover a {
     background: #ddd;
     cursor: pointer;
+}
+.tip-att .att_remove {
+    position: absolute;
+    right: 0;
+    top: .4em;
+    font-size: .8em;
+    margin-left: 5px;
+    padding: 5px;
 }
 
 .fun-bar a {

@@ -5,6 +5,7 @@
         Create Date: {{#date tip.createDate 'MM-DD-YYYY'}}{{/date}}
         <a href="/tips/tip/{{tip._id}}/edit" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
         <a id="btn_remove" href="/tips/rtag/{{tip._id}}" title="Remove"><i class="glyphicon glyphicon-trash"></i></a>
+        <a id="btn_att" href="#" title="Add Attachment"><i class="glyphicon glyphicon-paperclip"></i></a>   
     </div>
     {{#if tip.tags.length}}
     <div class="tip-taglist">
@@ -16,12 +17,15 @@
         {{/each}}
     </div>
     {{/if}}
-    <!-- <span>Attachments:</span> -->
     {{#if tip.attachments.length}}
     <ul class="tip-atts clearfix">
         {{#each tip.attachments}}
         <li class="tip-att">
-            <a href="/tips/att/{{_id}}?tid={{../tip._id}}"><i class="glyphicon glyphicon-paperclip"></i> {{fileName}}</a>
+            <a href="/tips/att/{{_id}}?tid={{../tip._id}}">
+                <i class="glyphicon glyphicon-paperclip"></i>
+                {{fileName}}
+            </a>
+            <a class="att_remove" href="/tips/{{../tip._id}}/rmatt/{{_id}}"><i class="glyphicon glyphicon-remove"></i></a>
         </li>
         {{/each}}
     </ul>
@@ -29,6 +33,8 @@
     <hr>
     <div>{{{tip.content}}}</div>
 </div>
+
+<input id="file_uploader" class="hidden" type="file" multiple />
 
 {{#if isdev}}
 <script src="/dv.vtip.js"></script>

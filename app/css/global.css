@@ -34,3 +34,7 @@ ul.breadcrumbs li:before {
   content: "";
   clear: both;
 }
+
+.hidden {
+  display: none;
+}

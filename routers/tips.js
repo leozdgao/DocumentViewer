@@ -26,11 +26,11 @@ router.use('/att/:id', function(req, res, next) {
         else {
             var att = tip[0].attachments.filter(function(item) { return item._id == att_id; })[0];
             if(att) {
-                res.download(att.path, att.fileName, function(e) {
-                    // console.log(e);
-                });
+                res.download(att.path, att.fileName);
             }
-            else res.status(400).end();
+            else {
+                res.status(400).end();
+            } 
         }
     })
     .catch(function(e) {
@@ -39,14 +39,32 @@ router.use('/att/:id', function(req, res, next) {
 });
 
 // add additional attachments
-router.post('/:id/attachment', function(req, res) {
+router.post('/:id/attachment', function (req, res) {
+    var id = req.params.id;
     var form = new formidable.IncomingForm();
     config.attpath && (form.uploadDir = config.attpath);
     
     form.parse(req, function(err, fields, files) {
-        // response
-        res.end();
+        
+        Tip.addAttachment(id, files)
+            .then(function (tip) {
+               res.status(200).json(tip); 
+            })
+            .catch(function (e) {
+                res.status(500).json(e);
+            });
     });
+});
+
+// remove attachment
+router.get('/:id/rmatt/:attId', function (req, res) {
+    var id = req.params.id;
+    var attId = req.params.attId;
+    
+    Tip.removeAttachment(id, attId)
+        .finally(function () { console.log('re');
+            res.redirect('/tips/tip/' + id);
+        });
 });
 
 // new tip

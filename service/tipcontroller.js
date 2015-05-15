@@ -1,5 +1,6 @@
 var Tip = require('./tip'); // model
 var Promise = require('bluebird');
+var fs = require('fs');
 
 exports.query = function(query, fields, options) {
     return Tip.findAsync(query, fields, options);
@@ -37,7 +38,7 @@ exports.getTags = function() {
             emit(1, { tags: this.tags });
         },
         reduce: function(key, values) {
-            var result = { tags: [] }
+            var result = { tags: [] };
             values.forEach(function(val) {
                 val.tags.forEach(function(i) {
                     if(result.tags.indexOf(i) < 0) result.tags.push(i);
@@ -47,13 +48,33 @@ exports.getTags = function() {
         }
     };
     return Tip.mapReduceAsync(o);
-}
-
-// attachments
-exports.addAttachment = function(att) {
-
 };
 
-exports.removeAttachment = function(id) {
+// attachments
+exports.addAttachment = function(id, atts) { // File object
+    atts = [].map.call(Object.keys(atts), function(name) {
+        var file = atts[name];
+        return {
+            fileName: file.name,
+            contentType: file.type,
+            path: file.path
+        };
+    });
     
+    return Tip.findOneAndUpdateAsync({ _id: id }, { $push: { attachments: { $each: atts } } });
+};
+
+exports.removeAttachment = function(id, attId) {
+    
+    return Tip.findOneAsync({ _id: id })
+            .then(function (tip) {
+                tip.attachments.forEach(function (att) { console.log(att._id);
+                    if(att._id == attId) {
+                        fs.unlink(att.path, function (e) { console.log(e); });
+                    }
+                });
+                
+                return Tip.findOneAndUpdateAsync({ _id: id }, { $pull: { attachments: { _id: attId } } }); 
+            });
+            
 };

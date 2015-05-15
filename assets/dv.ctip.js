@@ -135,12 +135,19 @@
 
 	        e.preventDefault();
 
+	        var fields = [];
 	        // validate field
 	        for(var key in validate) if(validate.hasOwnProperty(key)) {
 	            var control = document.getElementsByName(key)[0] || document.getElementById(key) || s_control[key];
 	            if(control && !validate[key].call(null, control)) {
-	                throw new ValidateError(key, 'Validate error: [' + key + ']');
+	                //throw new ValidateError(key, 'Validate error: [' + key + ']');
+	                fields.push(key);
 	            }
+	        }
+	        
+	        if(fields.length > 0) {
+	            new_tip_errmsg.textContent = "Required fields should be filled: " + fields.join(', ');
+	            return ;
 	        }
 
 	        backdrop.style.display = 'block';
@@ -184,8 +191,16 @@
 	    load: function(fn) {
 	        document.addEventListener('DOMContentLoaded', fn);
 	    },
-	    ajax: function() {
+	    ajax: function(method, url, onload, onerror) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open(method, url);
+	        xhr.onload = onload;
+	        xhr.onerror = onerror;
+	        xhr.timeout = 5000; // 5s timeout
 	        
+	        return {
+	            send: function (data) { xhr.send(data); }
+	        };
 	    }
 	};
 

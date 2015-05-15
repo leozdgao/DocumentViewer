@@ -47,7 +47,22 @@
 	var $ = __webpack_require__(3);
 	var editor = __webpack_require__(4)('content');
 
-
+	$.load(function () {
+		var btnSubmit = document.querySelector('#tipform button');
+		var title = document.getElementById('title');
+		var message = document.getElementById('new_tip_errmsg');
+	    btnSubmit.addEventListener('click', function (e) {
+			
+			var fields = [];
+			if(/^\s*$/.test(title.value)) fields.push('Title');
+			if(/^\s*$/.test(editor.getData())) fields.push('Content');
+			
+			if(fields.length > 0) {
+				e.preventDefault();
+				message.textContent = 'Require field should be filled: ' + fields.join(', ');
+			}
+		});
+	});
 
 
 /***/ },
@@ -65,8 +80,16 @@
 	    load: function(fn) {
 	        document.addEventListener('DOMContentLoaded', fn);
 	    },
-	    ajax: function() {
+	    ajax: function(method, url, onload, onerror) {
+	        var xhr = new XMLHttpRequest();
+	        xhr.open(method, url);
+	        xhr.onload = onload;
+	        xhr.onerror = onerror;
+	        xhr.timeout = 5000; // 5s timeout
 	        
+	        return {
+	            send: function (data) { xhr.send(data); }
+	        };
 	    }
 	};
 
