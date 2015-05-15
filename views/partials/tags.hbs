@@ -2,7 +2,7 @@
 {{#if tags.length}}
 <div class="tag-panel">
 	{{#each tags}}
-	<a class="label">{{this}}</a>
+	<a class="label" href="/tips?tag={{this}}">{{this}}</a>
 	{{/each}}
 </div>
 {{else}}

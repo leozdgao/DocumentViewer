@@ -240,6 +240,7 @@ router.use('/rtag/:tagId', function (req, res, next) {
 
 // get all tip
 router.use('/:page?', function(req, res, next) {
+    var tag = req.query.tag;
     var page = req.params.page || 1;
     var vm = {
         type: 'tips',
@@ -247,8 +248,9 @@ router.use('/:page?', function(req, res, next) {
         current_page: +page,
         first_page: 1 == page
     };
-
-    Tip.count()
+    var condition = tag ? { tags: tag } : {};
+    
+    Tip.count(condition)
         .then(function(c) {
             vm.count = Math.ceil(c / tips_per_page);
             if(c > 0) {
@@ -261,11 +263,17 @@ router.use('/:page?', function(req, res, next) {
                 }
                 else {
                     vm.last_page = (page == vm.count);
-
+                    
+                    // get total tags
                     Tip.getTags()
                         .then(function(tags) {
                             vm.tags = tags[0][0].value.tags;
-                            return Tip.page(page, tips_per_page);
+                            
+                            if(tag) {
+                                vm.currentTag = tag;
+                                return Tip.tagPage(tag, page, tips_per_page);  
+                            } 
+                            else return Tip.page(page, tips_per_page);
                         })
                         .then(function(data) {
                             vm.tips = data || [];
@@ -273,7 +281,7 @@ router.use('/:page?', function(req, res, next) {
 
                             res.render('tips/tips', vm);
                         })
-                        .catch(function(e) {
+                        .catch(function(e) { console.log(e);
                             next({
                                 status: 500,
                                 message: e.message,
@@ -286,7 +294,7 @@ router.use('/:page?', function(req, res, next) {
                 res.render('tips/tips', vm);
             }
         })
-        .catch(function(e) {
+        .catch(function(e) { console.log(e);
             next({
                 status: 500,
                 message: 'Internal error.',

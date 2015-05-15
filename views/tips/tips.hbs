@@ -9,6 +9,11 @@
 	        </span>
 	        <input type="text" class="form-control" placeholder="Search...">
 	    </div>
-        {{> tiplist}}    
+        {{#if currentTag}}
+        <div class="current_tag">
+            <label>Current Tag:</label> {{currentTag}}    
+        </div>
+        {{/if}}
+        {{> tiplist}}
     </div>    
 </div>

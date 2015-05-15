@@ -28,6 +28,10 @@ exports.page = function(page, limit) {
     return Tip.aggregateAsync([{ $sort: { priority: -1, createDate: -1 } }, { $skip: (page - 1) * limit }, { $limit: limit } ]);
 };
 
+exports.tagPage = function (tag, page, limit) {
+    return Tip.aggregateAsync([{ $match: { tags: tag  } }, { $sort: { priority: -1, createDate: -1 } }, { $skip: (page - 1) * limit }, { $limit: limit } ]);
+};
+
 exports.count = function(conditions) {
     return Tip.countAsync(conditions);
 };

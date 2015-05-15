@@ -49,7 +49,11 @@
     {{else}}
     <li>
     {{/ifEqual}}
+        {{#if ../currentTag}}
+        <a href="/tips/{{this}}?tag={{../currentTag}}">{{this}}</a>
+        {{else}}
         <a href="/tips/{{this}}">{{this}}</a>
+        {{/if}}
     </li>
     {{/repeater}}
     {{#if last_page}}

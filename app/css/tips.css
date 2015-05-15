@@ -49,3 +49,7 @@
   font-weight: 400;
   background-color: #999;
 }
+
+.current_tag {
+  margin: 20px 5px 10px 5px;
+}
