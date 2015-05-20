@@ -12,5 +12,6 @@ module.exports = {
 	},
 	externals: {
 		ckeditor: "CKEDITOR"
-	}
+	},
+	devtool: "source-map"
 };

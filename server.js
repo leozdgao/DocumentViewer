@@ -34,7 +34,7 @@ if (!/^\s*$/.test(imagesPath)) app.use(express.static(imagesPath));
 // routers
 app.use('/slides', require('./utils/preprocess'), require('./routers/slides'));
 app.use('/docs', require('./utils/preprocess'), require('./routers/docs'));
-app.use('/tips', require('./routers/tips'));
+app.use('/tips', require('./routers/tips_router'));
 // other request
 app.use(function (req, res) { res.redirect("/docs"); });
 

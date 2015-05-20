@@ -83,36 +83,19 @@ router.post('/new', function(req, res) {
     form.parse(req, function(err, fields, files) {
         // response
         var title = fields.title;
-        var keywords = fields.keywords;
         var content = fields.content;
 
         if(!/^\s*$/.test(title) && !/^\s*$/.test(content)) {
             
-            var tags = keywords.split(/\s*,\s*/).filter(function(n) { return n; }).sort();
-            if (tags.length > 0) {
-                var cursor = tags.length - 1;
-                var last = tags[tags.length - 1];
-                while(cursor--) {
-                    if(last === tags[cursor]) tags.splice(cursor, 1);
-                    else last = tags[cursor];
-                }    
-            }
-
-            var new_tip = {
-                title: title,
-                content: content,
-                priority: fields.topmost ? 1 : 0,
-                tags: tags,
-                attachments: [].map.call(Object.keys(files), function(name) {
-
-                    var file = files[name];
-                    return {
-                        fileName: file.name,
-                        contentType: file.type,
-                        path: file.path
-                    };
-                })
-            };
+            var new_tip = Tip.adaptor(fields);
+            new_tip.attachments = [].map.call(Object.keys(files), function(name) {
+                var file = files[name];
+                return {
+                    fileName: file.name,
+                    contentType: file.type,
+                    path: file.path
+                };
+            });
 
             Tip.post(new_tip)
                 .then(function() {
@@ -160,20 +143,7 @@ router.get('/tip/:id/edit', function (req, res, next) {
 
 router.post('/tip/:id/edit', require('body-parser').urlencoded({extended: true}), function (req, res, next) {
     var id = req.params.id;
-    var tags = req.body.keywords.split(/\s*,\s*/).filter(function(n) { return n; }).sort();
-    var cursor = tags.length - 1;
-    var last = tags[tags.length - 1];
-    while(cursor--) {
-        if(last === tags[cursor]) tags.splice(cursor, 1);
-        else last = tags[cursor];
-    }
-    
-    var update = {
-        content: req.body.content,
-        title: req.body.title,
-        tags:  tags,
-        priority: req.body.topmost ? 1 : 0
-    };
+    var update = Tip.adaptor(req.body);
     
     Tip.update(id, update)
         .then(function (e) {

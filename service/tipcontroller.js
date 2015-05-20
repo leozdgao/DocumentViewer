@@ -1,4 +1,4 @@
-var Tip = require('./tip'); // model
+var Tip = require('./tip_model'); // model
 var Promise = require('bluebird');
 var fs = require('fs');
 
@@ -81,4 +81,26 @@ exports.removeAttachment = function(id, attId) {
                 return Tip.findOneAndUpdateAsync({ _id: id }, { $pull: { attachments: { _id: attId } } }); 
             });
             
+};
+
+exports.adaptor = function (fields) {
+    var tags = fields.keywords.split(/\s*,\s*/)
+                     .filter(function(n) { return n; }) // remove empty string
+                     .sort();
+                     
+    if(tags.length > 0) {
+        var cursor = tags.length - 1;
+        var last = tags[tags.length - 1];
+        while(cursor--) {
+            if(last === tags[cursor]) tags.splice(cursor, 1);
+            else last = tags[cursor];
+        }    
+    }
+    
+    return {
+        content: fields.content,
+        title: fields.title,
+        tags:  tags,
+        priority: fields.topmost ? 1 : 0
+    };
 };
