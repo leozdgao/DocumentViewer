@@ -89,11 +89,13 @@ router.post('/new', function(req, res) {
         if(!/^\s*$/.test(title) && !/^\s*$/.test(content)) {
             
             var tags = keywords.split(/\s*,\s*/).filter(function(n) { return n; }).sort();
-            var cursor = tags.length - 1;
-            var last = tags[tags.length - 1];
-            while(cursor--) {
-                if(last === tags[cursor]) tags.splice(cursor, 1);
-                else last = tags[cursor];
+            if (tags.length > 0) {
+                var cursor = tags.length - 1;
+                var last = tags[tags.length - 1];
+                while(cursor--) {
+                    if(last === tags[cursor]) tags.splice(cursor, 1);
+                    else last = tags[cursor];
+                }    
             }
 
             var new_tip = {
