@@ -8,7 +8,6 @@ var backdrop = document.querySelector('.backdrop');
 // require modules
 var dropBox = require('./dropbox');
 var editor = require('./editor')('content');
-var ValidateError = require('./validate_error');
 
 dropBox.onAppendFile = function (fileList) {
     [].forEach.call(fileList, function(file, i) {

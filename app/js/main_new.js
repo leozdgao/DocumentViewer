@@ -1,4 +1,3 @@
-var ckeditor = require('ckeditor');
 var tipForm = require('./tipform');
 var $ = require('./common.js');
 
