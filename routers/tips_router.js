@@ -106,7 +106,7 @@ router.post('/new', function(req, res) {
                 });
         }
         else {
-            res.status(400).end();
+            res.status(400).json({msg: "Invalid request"});
         }
     });
 });
@@ -248,8 +248,6 @@ router.use('/search/:page?', function (req, res, next) {
             });
         });
 });
-
-
 
 // get all tip
 router.use('/:page?', function(req, res, next) {

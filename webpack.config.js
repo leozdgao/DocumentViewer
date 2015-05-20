@@ -1,18 +1,19 @@
 var path = require('path');
 var webpack = require('webpack');
+var glob = require('glob');
 
 function getEntry() {
-	
+	var entry = {};
+	glob.sync(__dirname + '/app/js/main_*.js').forEach(function (name) {
+		var n = name.match(/main_(.+?).js/)[1];
+		entry[n] = './js/main_' + n + '.js'; 
+	});
+	return entry;
 }
 
 module.exports = {
 	context: __dirname + '/app/',
-	entry: {
-		ctip: './js/main_new.js',
-		etip: './js/main_edit.js',
-		vtip: './js/main_view.js',
-		itip: './js/main_index.js'
-	},
+	entry: getEntry(),
 	output: {
 		path: path.resolve(__dirname, './assets'),
 		filename: 'dv.[name].min.js',
