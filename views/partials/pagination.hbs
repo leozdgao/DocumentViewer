@@ -1,0 +1,39 @@
+{{#if count-1}}
+<nav>
+  <ul class="pagination">
+    {{#if first_page}}
+    <li class="disabled">
+        <a aria-label="Previous">
+    {{else}}
+    <li>
+        <a href="/tips" aria-label="Previous">
+    {{/if}}
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {{#repeater count}}
+    {{#ifEqual ../current_page this}}
+    <li class="active">
+    {{else}}
+    <li>
+    {{/ifEqual}}
+        {{#if ../currentTag}}
+        <a href="/tips/{{this}}?tag={{../currentTag}}">{{this}}</a>
+        {{else}}
+        <a href="/tips/{{this}}">{{this}}</a>
+        {{/if}}
+    </li>
+    {{/repeater}}
+    {{#if last_page}}
+    <li class="disabled">
+        <a aria-label="Next">
+    {{else}}
+    <li>
+        <a href="/tips/{{count}}" aria-label="Next">
+    {{/if}}
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{{/if}}

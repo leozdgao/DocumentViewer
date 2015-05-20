@@ -187,21 +187,15 @@ router.use('/tip/:id', function(req, res, next) {
         });
 });
 
-router.use('/search', function (req, res) {
-
-});
-
 // remove the tag
 router.use('/rtag/:tagId', function (req, res, next) {
     var id = req.params.tagId;
 
     Tip.remove(id)
         .then(function (result) {
-
             res.redirect('/tips');
         })
         .catch(function (e) {
-
             next({
                 status: 500,
                 message: 'Internal error.',
@@ -209,6 +203,53 @@ router.use('/rtag/:tagId', function (req, res, next) {
             });
         });
 });
+
+// ----------------------------------------------------------
+//
+
+// get tags for vm
+router.use(function (req, res, next) {
+    res.vm = res.vm || {};
+    
+    // try get tags
+    Tip.getTags()
+        .then(function(tags) {
+            res.vm.tags = tags[0][0].value.tags; // set vm
+            next(); // continue
+        })
+        .catch(function (e) {
+            next({
+                status: 500,
+                message: e.message,
+                type: 'tips'
+            });
+        });
+});
+
+router.use('/search/:page?', function (req, res, next) {
+    var key = req.query.q;
+    var page = req.params.page || 1;
+    Tip.searchPage(key, page, tips_per_page)
+        .then(function (results) {
+            extend(res.vm, {
+                count: results.length,
+                searchKey: key,
+                tips: results,
+                type: "tips"
+            });
+            
+            res.render('tips/search', res.vm);
+        })
+        .catch(function (e) {
+            next({
+                status: 500,
+                message: e.message,
+                type: "tips"
+            });
+        });
+});
+
+
 
 // get all tip
 router.use('/:page?', function(req, res, next) {
@@ -235,25 +276,24 @@ router.use('/:page?', function(req, res, next) {
                 }
                 else {
                     vm.last_page = (page == vm.count);
+                    var promise;
+                    if(tag) {
+                        vm.currentTag = tag;
+                        promise = Tip.tagPage(tag, page, tips_per_page);  
+                    } 
+                    else promise = Tip.page(page, tips_per_page);
                     
                     // get total tags
-                    Tip.getTags()
-                        .then(function(tags) {
-                            vm.tags = tags[0][0].value.tags;
-                            
-                            if(tag) {
-                                vm.currentTag = tag;
-                                return Tip.tagPage(tag, page, tips_per_page);  
-                            } 
-                            else return Tip.page(page, tips_per_page);
-                        })
+                    promise
                         .then(function(data) {
                             vm.tips = data || [];
                             if(vm.tips.length <= 0) vm.isEmpty = true;
-
-                            res.render('tips/tips', vm);
+                            
+                            extend(res.vm, vm);
+                            
+                            res.render('tips/tips', res.vm);
                         })
-                        .catch(function(e) { console.log(e);
+                        .catch(function(e) {
                             next({
                                 status: 500,
                                 message: e.message,
@@ -266,7 +306,7 @@ router.use('/:page?', function(req, res, next) {
                 res.render('tips/tips', vm);
             }
         })
-        .catch(function(e) { console.log(e);
+        .catch(function(e) {
             next({
                 status: 500,
                 message: 'Internal error.',
@@ -276,3 +316,9 @@ router.use('/:page?', function(req, res, next) {
 });
 
 module.exports = router;
+
+function extend (a, b) {
+    for(var key in b) if(b.hasOwnProperty(key)) {
+        a[key] = b[key];
+    }
+}

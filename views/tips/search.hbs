@@ -9,15 +9,13 @@
 	        </span>
 	        <input id="txtSearch" type="text" class="form-control" placeholder="Search...">
 	    </div>
-        {{#if currentTag}}
         <div class="current_tag">
-            <label>Current Tag:</label> {{currentTag}}    
+            <label>Current Search Key:</label> {{searchKey}}    
         </div>
-        {{/if}}
-        {{#if isEmpty}}
-        <span id="emptymsg">No tips now. You can <a href="/tips/new">add a new one</a>.</span>    
+        {{#if tips.length}}
+        {{> tiplist}}    
         {{else}}
-        {{> tiplist}}
+        <span id="emptymsg">No searching results.</span>
         {{/if}}
     </div>    
 </div>

@@ -1,6 +1,3 @@
-{{#if isEmpty}}
-<span id="emptymsg">No tips now. You can <a href="/tips/new">add a new one</a>.</span>    
-{{else}}
 <table class="table">
     <thead>
         <tr>
@@ -29,44 +26,4 @@
         {{/each}}
     </tbody>
 </table>
-<!-- if pages count greater then 1, show pagination -->
-{{#if count-1}} 
-<nav>
-  <ul class="pagination">
-    {{#if first_page}}
-    <li class="disabled">
-        <a aria-label="Previous">
-    {{else}}
-    <li>
-        <a href="/tips" aria-label="Previous">
-    {{/if}}
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {{#repeater count}}
-    {{#ifEqual ../current_page this}}
-    <li class="active">
-    {{else}}
-    <li>
-    {{/ifEqual}}
-        {{#if ../currentTag}}
-        <a href="/tips/{{this}}?tag={{../currentTag}}">{{this}}</a>
-        {{else}}
-        <a href="/tips/{{this}}">{{this}}</a>
-        {{/if}}
-    </li>
-    {{/repeater}}
-    {{#if last_page}}
-    <li class="disabled">
-        <a aria-label="Next">
-    {{else}}
-    <li>
-        <a href="/tips/{{count}}" aria-label="Next">
-    {{/if}}
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-{{/if}}
-{{/if}}
+{{> pagination}}

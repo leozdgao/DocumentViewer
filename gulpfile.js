@@ -20,12 +20,6 @@ var del = require('del');
 gulp.task('default', ['release']);
 gulp.task('release', ['release:css', 'release:js']); 
 
-//gulp.task('config:release', function() {
-//    var config = require('./config.json');
-//    config.env = 'release';
-//    fs.writeFileSync('config.json', JSON.stringify(config, null, 4), 'utf-8');
-//});
-
 gulp.task('release:css', function() {
 
     //css
@@ -44,28 +38,14 @@ gulp.task('release:js', function() { // add jslint and uTest later maybe
 
     //js
     return gulp.src(files.js)
-            // .pipe(concat(files.destJs))
             .pipe(webpack(require('./webpack.config.js')))
-            .pipe(gulp.dest(files.release)) 
-            //js hint before uglify
-            // .pipe(jshint())
-            // .pipe(jshint.reporter('jshint-stylish'))
-            //uglify
-//            .pipe(rename({suffix:'.min'}))
-//            .pipe(uglify())
-//            .pipe(gulp.dest(files.release));
+            .pipe(gulp.dest(files.release));
 });
 
 //-----------------------------------------------> for dev
 
 gulp.task('dev', ['concat', 'watch', 'server']);
 gulp.task('concat', ['concat:css', 'concat:js']);
-
-//gulp.task('config:dev', function() {
-//    var config = require('./config.json');
-//    config.env = 'dev';
-//    fs.writeFileSync('config.json', JSON.stringify(config, null, 4), 'utf-8');
-//});
 
 gulp.task('server', function() {
 
