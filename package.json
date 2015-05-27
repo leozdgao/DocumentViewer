@@ -16,6 +16,7 @@
     "jade": "~1.6.0",
     "moment": "^2.10.2",
     "mongoose": "^4.0.1",
+    "qiniu": "^6.1.8",
     "remarkable": "^1.4.2",
     "thenjs": "^1.4.5"
   },

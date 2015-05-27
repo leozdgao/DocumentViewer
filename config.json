@@ -6,5 +6,10 @@
     "attpath": "D:\\temp",
     "dbConnection": "mongodb://10.10.73.207:27018/Doc",
     "tips_per_page": 15,
-    "env": "dev"
+    "env": "dev",
+    "qiniu": {
+        "access_key": "mW7zd3zNY0LHwbh6loeAWDyzYYnsD5UaXPMveMBc",
+        "secret_key": "vUNx0iFBux7BHEML7VK6mcoee_RiJ16s6jcmAxMk",
+        "bucket_name": ""
+    }
 }
